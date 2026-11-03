@@ -1,0 +1,559 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 lab16=# CREATE TABLE accounts (\
+    account_id SERIAL PRIMARY KEY,\
+    owner VARCHAR(50),\
+    balance NUMERIC(12,2) NOT NULL CHECK (balance >= 0)\
+);\
+\
+CREATE TABLE customers (\
+    customer_id SERIAL PRIMARY KEY,\
+    name VARCHAR(100),\
+    email VARCHAR(100)\
+);\
+\
+CREATE TABLE orders (\
+    id SERIAL PRIMARY KEY,\
+    customer_id INTEGER REFERENCES customers(customer_id),\
+    total NUMERIC(10,2)\
+);\
+\
+CREATE TABLE order_items (\
+    item_id SERIAL PRIMARY KEY,\
+    order_id INTEGER REFERENCES orders(id),\
+    product_id INTEGER,\
+    quantity INTEGER\
+);\
+\
+CREATE TABLE inventory (\
+    product_id INTEGER PRIMARY KEY,\
+    stock INTEGER CHECK (stock >= 0)\
+);\
+\
+CREATE TABLE products (\
+    product_id SERIAL PRIMARY KEY,\
+    name VARCHAR(100),\
+    price NUMERIC(10,2) CHECK (price >= 0)\
+);\
+\
+CREATE TABLE logs (\
+    log_id SERIAL PRIMARY KEY,\
+    message TEXT\
+);\
+\
+CREATE TABLE audit_log (\
+    log_id SERIAL PRIMARY KEY,\
+    action VARCHAR(50),\
+    timestamp TIMESTAMP\
+);\
+\
+CREATE TABLE users (\
+    id SERIAL PRIMARY KEY,\
+    name VARCHAR(100),\
+    email VARCHAR(100)\
+);\
+\
+CREATE TABLE user_preferences (\
+    user_id INTEGER REFERENCES users(id),\
+    theme VARCHAR(20)\
+);\
+\
+INSERT INTO accounts (owner, balance) VALUES ('Alice', 1000), ('Bob', 500);\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+INSERT 0 2\
+lab16=# BEGIN;\
+ROLLBACK;\
+\
+BEGIN TRANSACTION;\
+ROLLBACK;\
+\
+START TRANSACTION;\
+ROLLBACK;\
+BEGIN\
+ROLLBACK\
+BEGIN\
+ROLLBACK\
+START TRANSACTION\
+ROLLBACK\
+lab16=# BEGIN;\
+UPDATE accounts SET balance = balance - 100 WHERE account_id = 1;\
+UPDATE accounts SET balance = balance + 100 WHERE account_id = 2;\
+COMMIT;\
+\
+SELECT * FROM accounts ORDER BY account_id;\
+BEGIN\
+UPDATE 1\
+UPDATE 1\
+COMMIT\
+ account_id | owner | balance \
+------------+-------+---------\
+          1 | Alice |  900.00\
+          2 | Bob   |  600.00\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab16=# BEGIN;\
+UPDATE accounts SET balance = balance - 100 WHERE account_id = 1;\
+UPDATE accounts SET balance = balance + 100 WHERE account_id = 2;\
+ROLLBACK;\
+\
+SELECT * FROM accounts ORDER BY account_id;\
+BEGIN\
+UPDATE 1\
+UPDATE 1\
+ROLLBACK\
+ account_id | owner | balance \
+------------+-------+---------\
+          1 | Alice |  900.00\
+          2 | Bob   |  600.00\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab16=# BEGIN;\
+SELECT balance FROM accounts WHERE account_id = 1;\
+UPDATE accounts SET balance = balance - 500 WHERE account_id = 1;\
+UPDATE accounts SET balance = balance + 500 WHERE account_id = 2;\
+COMMIT;\
+\
+SELECT * FROM accounts ORDER BY account_id;\
+BEGIN\
+ balance \
+---------\
+  900.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+UPDATE 1\
+UPDATE 1\
+COMMIT\
+ account_id | owner | balance \
+------------+-------+---------\
+          1 | Alice |  400.00\
+          2 | Bob   | 1100.00\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab16=# TRUNCATE order_items, orders, customers RESTART IDENTITY CASCADE;\
+INSERT INTO customers (name, email) VALUES ('Base Customer', 'base@email.com');\
+INSERT INTO inventory (product_id, stock) VALUES (101, 10), (102, 5);\
+\
+BEGIN;\
+INSERT INTO orders (customer_id, total) VALUES (1, 250.00);\
+INSERT INTO order_items (order_id, product_id, quantity) VALUES (1, 101, 2);\
+UPDATE inventory SET stock = stock - 2 WHERE product_id = 101;\
+COMMIT;\
+\
+SELECT * FROM orders;\
+SELECT * FROM inventory ORDER BY product_id;\
+TRUNCATE TABLE\
+INSERT 0 1\
+INSERT 0 2\
+BEGIN\
+INSERT 0 1\
+INSERT 0 1\
+UPDATE 1\
+COMMIT\
+ id | customer_id | total  \
+----+-------------+--------\
+  1 |           1 | 250.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+ product_id | stock \
+------------+-------\
+        101 |     8\
+        102 |     5\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab16=# UPDATE inventory SET stock = 1 WHERE product_id = 101;\
+\
+BEGIN;\
+INSERT INTO orders (customer_id, total) VALUES (1, 250.00);\
+INSERT INTO order_items (order_id, product_id, quantity) VALUES (2, 101, 2);\
+UPDATE inventory SET stock = stock - 2 WHERE product_id = 101;\
+COMMIT;\
+\
+SELECT count(*) AS orders_count FROM orders;\
+SELECT count(*) AS items_count FROM order_items;\
+\
+UPDATE inventory SET stock = 10 WHERE product_id = 101;\
+UPDATE 1\
+BEGIN\
+INSERT 0 1\
+INSERT 0 1\
+ERROR:  new row for relation "inventory" violates check constraint "inventory_stock_check"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Failing row contains (101, -1).\
+ROLLBACK\
+ orders_count \
+--------------\
+            1\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+ items_count \
+-------------\
+           1\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+UPDATE 1\
+lab16=# TRUNCATE order_items, orders, customers RESTART IDENTITY CASCADE;\
+\
+BEGIN;\
+INSERT INTO customers (name, email) VALUES ('John Doe', 'john@email.com');\
+INSERT INTO orders (customer_id, total) VALUES (LASTVAL(), 100.00);\
+COMMIT;\
+\
+SELECT o.id, c.name, o.total FROM orders o JOIN customers c ON c.customer_id = o.customer_id;\
+TRUNCATE TABLE\
+BEGIN\
+INSERT 0 1\
+INSERT 0 1\
+COMMIT\
+ id |   name   | total  \
+----+----------+--------\
+  1 | John Doe | 100.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab16=# INSERT INTO customers (name, email) VALUES ('Mary Roe', 'mary@email.com');\
+INSERT INTO orders (customer_id, total) VALUES (currval('customers_customer_id_seq'), 100.00);\
+INSERT 0 1\
+INSERT 0 1\
+lab16=# BEGIN;\
+INSERT INTO orders (customer_id, total) VALUES (999, 10.00);\
+ROLLBACK;\
+BEGIN\
+ERROR:  insert or update on table "orders" violates foreign key constraint "orders_customer_id_fkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (customer_id)=(999) is not present in table "customers".\
+ROLLBACK\
+lab16=# BEGIN TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\
+SELECT * FROM accounts;\
+SHOW transaction_isolation;\
+COMMIT;\
+\
+BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;\
+SELECT * FROM accounts WHERE balance > 1000;\
+SELECT * FROM accounts WHERE balance > 1000;\
+COMMIT;\
+\
+BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;\
+SELECT * FROM accounts WHERE balance > 1000;\
+SELECT * FROM accounts WHERE balance > 1000;\
+COMMIT;\
+\
+BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE;\
+SELECT * FROM accounts;\
+UPDATE accounts SET balance = balance * 1.05;\
+COMMIT;\
+\
+SELECT * FROM accounts ORDER BY account_id;\
+BEGIN\
+ account_id | owner | balance \
+------------+-------+---------\
+          1 | Alice |  400.00\
+          2 | Bob   | 1100.00\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+ transaction_isolation \
+-----------------------\
+ read uncommitted\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+COMMIT\
+BEGIN\
+ account_id | owner | balance \
+------------+-------+---------\
+          2 | Bob   | 1100.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+ account_id | owner | balance \
+------------+-------+---------\
+          2 | Bob   | 1100.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+COMMIT\
+BEGIN\
+ account_id | owner | balance \
+------------+-------+---------\
+          2 | Bob   | 1100.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+ account_id | owner | balance \
+------------+-------+---------\
+          2 | Bob   | 1100.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+COMMIT\
+BEGIN\
+ account_id | owner | balance \
+------------+-------+---------\
+          1 | Alice |  400.00\
+          2 | Bob   | 1100.00\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+UPDATE 2\
+COMMIT\
+ account_id | owner | balance \
+------------+-------+---------\
+          1 | Alice |  420.00\
+          2 | Bob   | 1155.00\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab16=# SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;\
+SHOW transaction_isolation;\
+WARNING:  SET TRANSACTION can only be used in transaction blocks\
+SET\
+ transaction_isolation \
+-----------------------\
+ read committed\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab16=# SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL REPEATABLE READ;\
+SHOW transaction_isolation;\
+SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED;\
+SET\
+ transaction_isolation \
+-----------------------\
+ repeatable read\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+SET\
+lab16=# BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;\
+SELECT balance FROM accounts WHERE account_id = 1;\
+BEGIN\
+ balance \
+---------\
+  420.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab16=*# UPDATE accounts SET balance = balance + 1 WHERE account_id = 1;\
+UPDATE 1\
+lab16=*# UPDATE accounts SET balance = balance + 1 WHERE account_id = 1;\
+UPDATE 1\
+lab16=*# SELECT balance FROM accounts WHERE account_id = 1;\
+COMMIT;\
+SELECT balance FROM accounts WHERE account_id = 1;\
+ balance \
+---------\
+  422.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+COMMIT\
+ balance \
+---------\
+  422.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab16=# TRUNCATE order_items, orders, customers RESTART IDENTITY CASCADE;\
+\
+BEGIN;\
+INSERT INTO customers (name, email) VALUES ('Alice', 'alice@email.com');\
+SAVEPOINT after_customer_insert;\
+INSERT INTO orders (customer_id, total) VALUES (1, 500.00);\
+ROLLBACK TO SAVEPOINT after_customer_insert;\
+INSERT INTO orders (customer_id, total) VALUES (1, 300.00);\
+COMMIT;\
+\
+SELECT * FROM customers;\
+SELECT * FROM orders;\
+TRUNCATE TABLE\
+BEGIN\
+INSERT 0 1\
+SAVEPOINT\
+INSERT 0 1\
+ROLLBACK\
+INSERT 0 1\
+COMMIT\
+ customer_id | name  |      email      \
+-------------+-------+-----------------\
+           1 | Alice | alice@email.com\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+ id | customer_id | total  \
+----+-------------+--------\
+  2 |           1 | 300.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab16=# BEGIN;\
+INSERT INTO products (name, price) VALUES ('Laptop', 999.99);\
+SAVEPOINT sp1;\
+INSERT INTO products (name, price) VALUES ('Mouse', 25.99);\
+SAVEPOINT sp2;\
+INSERT INTO products (name, price) VALUES ('Invalid Product', -50.00);\
+ROLLBACK TO SAVEPOINT sp2;\
+INSERT INTO products (name, price) VALUES ('Keyboard', 79.99);\
+COMMIT;\
+\
+SELECT * FROM products ORDER BY product_id;\
+BEGIN\
+INSERT 0 1\
+SAVEPOINT\
+INSERT 0 1\
+SAVEPOINT\
+ERROR:  new row for relation "products" violates check constraint "products_price_check"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Failing row contains (3, Invalid Product, -50.00).\
+ROLLBACK\
+INSERT 0 1\
+COMMIT\
+ product_id |   name   | price  \
+------------+----------+--------\
+          1 | Laptop   | 999.99\
+          2 | Mouse    |  25.99\
+          4 | Keyboard |  79.99\
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab16=# BEGIN;\
+INSERT INTO logs (message) VALUES ('Starting process');\
+SAVEPOINT process_start;\
+INSERT INTO logs (message) VALUES ('Process completed');\
+RELEASE SAVEPOINT process_start;\
+COMMIT;\
+\
+SELECT * FROM logs;\
+BEGIN\
+INSERT 0 1\
+SAVEPOINT\
+INSERT 0 1\
+RELEASE\
+COMMIT\
+ log_id |      message      \
+--------+-------------------\
+      1 | Starting process\
+      2 | Process completed\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab16=# TRUNCATE order_items, orders, customers RESTART IDENTITY CASCADE;\
+INSERT INTO customers (name, email) VALUES ('Base Customer', 'base@email.com');\
+INSERT INTO orders (customer_id, total) VALUES (1, 100.00);\
+\
+BEGIN;\
+UPDATE inventory SET stock = stock - 1 WHERE product_id = 101;\
+INSERT INTO order_items (order_id, product_id, quantity) VALUES (1, 101, 1);\
+COMMIT;\
+TRUNCATE TABLE\
+INSERT 0 1\
+INSERT 0 1\
+BEGIN\
+UPDATE 1\
+INSERT 0 1\
+COMMIT\
+lab16=# UPDATE accounts SET balance = 1000 WHERE account_id = 1;\
+UPDATE accounts SET balance = 500 WHERE account_id = 2;\
+\
+DO $$\
+DECLARE\
+    current_balance DECIMAL;\
+BEGIN\
+    SELECT balance INTO current_balance FROM accounts WHERE account_id = 1;\
+\
+    IF current_balance < 100 THEN\
+        RAISE EXCEPTION 'Insufficient funds';\
+    END IF;\
+\
+    UPDATE accounts SET balance = balance - 100 WHERE account_id = 1;\
+    UPDATE accounts SET balance = balance + 100 WHERE account_id = 2;\
+EXCEPTION\
+    WHEN OTHERS THEN\
+        RAISE NOTICE 'Transaction failed: %', SQLERRM;\
+END $$;\
+\
+SELECT * FROM accounts ORDER BY account_id;\
+UPDATE 1\
+UPDATE 1\
+DO\
+ account_id | owner | balance \
+------------+-------+---------\
+          1 | Alice |  900.00\
+          2 | Bob   |  600.00\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab16=# UPDATE accounts SET balance = 50 WHERE account_id = 1;\
+UPDATE 1\
+lab16=# UPDATE accounts SET balance = 1000 WHERE account_id = 1;\
+UPDATE 1\
+lab16=# BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE;\
+COMMIT;\
+\
+BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;\
+COMMIT;\
+\
+BEGIN;\
+INSERT INTO orders (customer_id, total) VALUES (1, 1000.00);\
+SAVEPOINT before_items;\
+INSERT INTO order_items (order_id, product_id, quantity)\
+VALUES (currval('orders_id_seq'), 101, 2);\
+INSERT INTO order_items (order_id, product_id, quantity)\
+VALUES (currval('orders_id_seq'), 102, 1);\
+COMMIT;\
+\
+SELECT * FROM order_items ORDER BY item_id;\
+BEGIN\
+COMMIT\
+BEGIN\
+COMMIT\
+BEGIN\
+INSERT 0 1\
+SAVEPOINT\
+INSERT 0 1\
+INSERT 0 1\
+COMMIT\
+ item_id | order_id | product_id | quantity \
+---------+----------+------------+----------\
+       1 |        1 |        101 |        1\
+       2 |        2 |        101 |        2\
+       3 |        2 |        102 |        1\
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab16=# SELECT\
+    blocked.pid AS blocked_pid,\
+    blocked.usename AS blocked_user,\
+    blocking.pid AS blocking_pid,\
+    blocking.usename AS blocking_user,\
+    blocked.query AS blocked_statement\
+FROM pg_stat_activity blocked\
+JOIN pg_stat_activity blocking ON blocking.pid = ANY(pg_blocking_pids(blocked.pid));\
+ blocked_pid | blocked_user | blocking_pid | blocking_user | blocked_statement \
+-------------+--------------+--------------+---------------+-------------------\
+(0 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab16=# BEGIN;\
+UPDATE accounts SET balance = balance WHERE account_id = 2;\
+BEGIN\
+UPDATE 1\
+lab16=*# UPDATE accounts SET balance = balance + 1 WHERE account_id = 2;\
+UPDATE 1\
+lab16=*# BEGIN;\
+INSERT INTO audit_log (action, timestamp) VALUES ('user_creation', NOW());\
+INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');\
+INSERT INTO user_preferences (user_id, theme) VALUES (currval('users_id_seq'), 'dark');\
+COMMIT;\
+\
+INSERT INTO audit_log (action, timestamp) VALUES ('user_creation', NOW());\
+INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');\
+\
+SELECT count(*) FROM audit_log;\
+SELECT * FROM user_preferences;\
+WARNING:  there is already a transaction in progress\
+BEGIN\
+INSERT 0 1\
+INSERT 0 1\
+INSERT 0 1\
+COMMIT\
+INSERT 0 1\
+INSERT 0 1\
+ count \
+-------\
+     2\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+ user_id | theme \
+---------+-------\
+       1 | dark\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )}

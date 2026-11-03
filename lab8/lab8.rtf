@@ -1,0 +1,432 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww25400\viewh14820\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 postgres=# CREATE DATABASE lab8;\
+CREATE DATABASE\
+postgres=# \\c lab8\
+\uc0\u1042 \u1099  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1099  \u1082  \u1073 \u1072 \u1079 \u1077  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093  "lab8" \u1082 \u1072 \u1082  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100  "cholponklv".\
+lab8=# CREATE TABLE departments (\
+    dept_id SERIAL PRIMARY KEY,\
+    dept_name VARCHAR(100) NOT NULL,\
+    location VARCHAR(100)\
+);\
+CREATE TABLE\
+lab8=# CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    dept_id INTEGER REFERENCES departments(dept_id)\
+);\
+CREATE TABLE\
+lab8=# \\d employees\
+                                               \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.employees"\
+  \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094    |          \u1058 \u1080 \u1087           | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL |               \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102                 \
+------------+-----------------------+--------------------+-------------------+-------------------------------------------\
+ emp_id     | integer               |                    | not null          | nextval('employees_emp_id_seq'::regclass)\
+ first_name | character varying(50) |                    | not null          | \
+ last_name  | character varying(50) |                    | not null          | \
+ dept_id    | integer               |                    |                   | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "employees_pkey" PRIMARY KEY, btree (emp_id)\
+\uc0\u1054 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1103  \u1074 \u1085 \u1077 \u1096 \u1085 \u1077 \u1075 \u1086  \u1082 \u1083 \u1102 \u1095 \u1072 :\
+    "employees_dept_id_fkey" FOREIGN KEY (dept_id) REFERENCES departments(dept_id)\
+\
+lab8=# DROP TABLE employees;\
+DROP TABLE\
+lab8=# CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    dept_id INTEGER,\
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_id)\
+);\
+CREATE TABLE\
+lab8=# \\d employees\
+                                               \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.employees"\
+  \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094    |          \u1058 \u1080 \u1087           | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL |               \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102                 \
+------------+-----------------------+--------------------+-------------------+-------------------------------------------\
+ emp_id     | integer               |                    | not null          | nextval('employees_emp_id_seq'::regclass)\
+ first_name | character varying(50) |                    | not null          | \
+ last_name  | character varying(50) |                    | not null          | \
+ dept_id    | integer               |                    |                   | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "employees_pkey" PRIMARY KEY, btree (emp_id)\
+\uc0\u1054 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1103  \u1074 \u1085 \u1077 \u1096 \u1085 \u1077 \u1075 \u1086  \u1082 \u1083 \u1102 \u1095 \u1072 :\
+    "employees_dept_id_fkey" FOREIGN KEY (dept_id) REFERENCES departments(dept_id)\
+\
+lab8=# DROP TABLE employees;\
+DROP TABLE\
+lab8=# CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    dept_id INTEGER\
+);\
+CREATE TABLE\
+lab8=# ALTER TABLE employees\
+ADD CONSTRAINT fk_employee_department\
+FOREIGN KEY (dept_id) REFERENCES departments(dept_id);\
+ALTER TABLE\
+lab8=# \\d employees\
+                                               \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.employees"\
+  \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094    |          \u1058 \u1080 \u1087           | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL |               \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102                 \
+------------+-----------------------+--------------------+-------------------+-------------------------------------------\
+ emp_id     | integer               |                    | not null          | nextval('employees_emp_id_seq'::regclass)\
+ first_name | character varying(50) |                    | not null          | \
+ last_name  | character varying(50) |                    | not null          | \
+ dept_id    | integer               |                    |                   | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "employees_pkey" PRIMARY KEY, btree (emp_id)\
+\uc0\u1054 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1103  \u1074 \u1085 \u1077 \u1096 \u1085 \u1077 \u1075 \u1086  \u1082 \u1083 \u1102 \u1095 \u1072 :\
+    "fk_employee_department" FOREIGN KEY (dept_id) REFERENCES departments(dept_id)\
+\
+lab8=# DROP TABLE employees;\
+DROP TABLE\
+lab8=# CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    dept_id INTEGER,\
+    CONSTRAINT fk_employee_department\
+        FOREIGN KEY (dept_id) REFERENCES departments(dept_id)\
+);\
+CREATE TABLE\
+lab8=# \\d employees\
+                                               \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.employees"\
+  \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094    |          \u1058 \u1080 \u1087           | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL |               \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102                 \
+------------+-----------------------+--------------------+-------------------+-------------------------------------------\
+ emp_id     | integer               |                    | not null          | nextval('employees_emp_id_seq'::regclass)\
+ first_name | character varying(50) |                    | not null          | \
+ last_name  | character varying(50) |                    | not null          | \
+ dept_id    | integer               |                    |                   | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "employees_pkey" PRIMARY KEY, btree (emp_id)\
+\uc0\u1054 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1103  \u1074 \u1085 \u1077 \u1096 \u1085 \u1077 \u1075 \u1086  \u1082 \u1083 \u1102 \u1095 \u1072 :\
+    "fk_employee_department" FOREIGN KEY (dept_id) REFERENCES departments(dept_id)\
+\
+lab8=# INSERT INTO departments (dept_name, location) VALUES\
+    ('Engineering', 'Building A'),\
+    ('Marketing', 'Building B'),\
+    ('HR', 'Building C');\
+INSERT 0 3\
+lab8=# INSERT INTO employees (first_name, last_name, dept_id) VALUES ('John', 'Smith', 1);\
+INSERT 0 1\
+lab8=# INSERT INTO employees (first_name, last_name, dept_id) VALUES ('Jane', 'Doe', 99);\
+ERROR:  insert or update on table "employees" violates foreign key constraint "fk_employee_department"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (dept_id)=(99) is not present in table "departments".\
+lab8=# DELETE FROM departments WHERE dept_id = 1;\
+ERROR:  update or delete on table "departments" violates foreign key constraint "fk_employee_department" on table "employees"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (dept_id)=(1) is still referenced from table "employees".\
+lab8=# UPDATE employees SET dept_id = 99 WHERE first_name = 'John';\
+ERROR:  insert or update on table "employees" violates foreign key constraint "fk_employee_department"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (dept_id)=(99) is not present in table "departments".\
+lab8=# -- ON DELETE CASCADE\
+DROP TABLE employees;\
+CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    dept_id INTEGER REFERENCES departments(dept_id) ON DELETE CASCADE\
+);\
+INSERT INTO employees (first_name, last_name, dept_id) VALUES\
+    ('John', 'Smith', 1), ('Jane', 'Doe', 1), ('Sarah', 'Davis', 2);\
+DELETE FROM departments WHERE dept_id = 1;\
+SELECT * FROM employees;\
+INSERT INTO departments (dept_id, dept_name, location) VALUES (1, 'Engineering', 'Building A');\
+DROP TABLE\
+CREATE TABLE\
+INSERT 0 3\
+DELETE 1\
+ emp_id | first_name | last_name | dept_id \
+--------+------------+-----------+---------\
+      3 | Sarah      | Davis     |       2\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+INSERT 0 1\
+lab8=# DROP TABLE employees;\
+CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    dept_id INTEGER REFERENCES departments(dept_id) ON DELETE SET NULL\
+);\
+INSERT INTO employees (first_name, last_name, dept_id) VALUES\
+    ('John', 'Smith', 1), ('Jane', 'Doe', 1), ('Sarah', 'Davis', 2);\
+DELETE FROM departments WHERE dept_id = 1;\
+SELECT * FROM employees;\
+INSERT INTO departments (dept_id, dept_name, location) VALUES (1, 'Engineering', 'Building A');\
+DROP TABLE\
+CREATE TABLE\
+INSERT 0 3\
+DELETE 1\
+ emp_id | first_name | last_name | dept_id \
+--------+------------+-----------+---------\
+      3 | Sarah      | Davis     |       2\
+      1 | John       | Smith     |        \
+      2 | Jane       | Doe       |        \
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+INSERT 0 1\
+lab8=# INSERT INTO departments (dept_id, dept_name, location) VALUES (0, 'Unassigned', NULL);\
+\
+DROP TABLE employees;\
+CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    dept_id INTEGER DEFAULT 0 REFERENCES departments(dept_id) ON DELETE SET DEFAULT\
+);\
+INSERT INTO employees (first_name, last_name, dept_id) VALUES\
+    ('John', 'Smith', 1), ('Jane', 'Doe', 1);\
+DELETE FROM departments WHERE dept_id = 1;\
+SELECT * FROM employees;\
+INSERT INTO departments (dept_id, dept_name, location) VALUES (1, 'Engineering', 'Building A');\
+INSERT 0 1\
+DROP TABLE\
+CREATE TABLE\
+INSERT 0 2\
+DELETE 1\
+ emp_id | first_name | last_name | dept_id \
+--------+------------+-----------+---------\
+      1 | John       | Smith     |       0\
+      2 | Jane       | Doe       |       0\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+INSERT 0 1\
+lab8=# DROP TABLE employees;\
+CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    dept_id INTEGER REFERENCES departments(dept_id) ON DELETE RESTRICT\
+);\
+INSERT INTO employees (first_name, last_name, dept_id) VALUES ('John', 'Smith', 1);\
+DELETE FROM departments WHERE dept_id = 1;\
+DROP TABLE\
+CREATE TABLE\
+INSERT 0 1\
+ERROR:  update or delete on table "departments" violates foreign key constraint "employees_dept_id_fkey" on table "employees"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (dept_id)=(1) is still referenced from table "employees".\
+lab8=# -- Combined: ON DELETE CASCADE + ON UPDATE CASCADE\
+DROP TABLE employees;\
+CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    dept_id INTEGER REFERENCES departments(dept_id)\
+        ON DELETE CASCADE\
+        ON UPDATE CASCADE\
+);\
+DROP TABLE\
+CREATE TABLE\
+lab8=# DROP TABLE employees;\
+DROP TABLE departments;\
+DROP TABLE\
+DROP TABLE\
+lab8=# CREATE TABLE users (\
+    user_id SERIAL PRIMARY KEY,\
+    username VARCHAR(50) UNIQUE NOT NULL,\
+    email VARCHAR(100) UNIQUE NOT NULL,\
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\
+);\
+CREATE TABLE\
+lab8=# CREATE TABLE user_profiles (\
+    profile_id SERIAL PRIMARY KEY,\
+    user_id INTEGER UNIQUE NOT NULL,\
+    first_name VARCHAR(50),\
+    last_name VARCHAR(50),\
+    bio TEXT,\
+    profile_picture_url VARCHAR(255),\
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE\
+);\
+CREATE TABLE\
+lab8=# DROP TABLE user_profiles;\
+DROP TABLE\
+lab8=# CREATE TABLE user_profiles (\
+    user_id INTEGER PRIMARY KEY,\
+    first_name VARCHAR(50),\
+    last_name VARCHAR(50),\
+    bio TEXT,\
+    profile_picture_url VARCHAR(255),\
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE\
+);\
+CREATE TABLE\
+lab8=# INSERT INTO users (username, email) VALUES ('johndoe', 'john@example.com');\
+\
+INSERT INTO user_profiles (user_id, first_name, last_name, bio)\
+VALUES (1, 'John', 'Doe', 'Software developer passionate about databases');\
+INSERT 0 1\
+INSERT 0 1\
+lab8=# INSERT INTO user_profiles (user_id, first_name, last_name)\
+VALUES (1, 'Jane', 'Smith');\
+ERROR:  duplicate key value violates unique constraint "user_profiles_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (user_id)=(1) already exists.\
+lab8=# CREATE TABLE departments (\
+    dept_id SERIAL PRIMARY KEY,\
+    dept_name VARCHAR(100) NOT NULL,\
+    manager_name VARCHAR(100),\
+    budget DECIMAL(10,2)\
+);\
+CREATE TABLE\
+lab8=# CREATE TABLE employees (\
+    emp_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    position VARCHAR(100),\
+    salary DECIMAL(10,2),\
+    hire_date DATE DEFAULT CURRENT_DATE,\
+    dept_id INTEGER NOT NULL,\
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_id) ON DELETE RESTRICT\
+);\
+CREATE TABLE\
+lab8=# CREATE TABLE blog_posts (\
+    post_id SERIAL PRIMARY KEY,\
+    title VARCHAR(200) NOT NULL,\
+    content TEXT,\
+    author VARCHAR(100),\
+    published_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP\
+);\
+CREATE TABLE\
+lab8=# CREATE TABLE comments (\
+    comment_id SERIAL PRIMARY KEY,\
+    post_id INTEGER NOT NULL,\
+    commenter_name VARCHAR(100),\
+    comment_text TEXT NOT NULL,\
+    comment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
+    FOREIGN KEY (post_id) REFERENCES blog_posts(post_id) ON DELETE CASCADE\
+);\
+CREATE TABLE\
+lab8=# INSERT INTO departments (dept_name, manager_name, budget) VALUES\
+    ('Engineering', 'Alice Johnson', 500000.00),\
+    ('Marketing', 'Bob Wilson', 200000.00);\
+\
+INSERT INTO employees (first_name, last_name, position, salary, dept_id) VALUES\
+    ('John', 'Smith', 'Software Engineer', 75000.00, 1),\
+    ('Jane', 'Doe', 'Senior Developer', 85000.00, 1),\
+    ('Mike', 'Brown', 'DevOps Engineer', 80000.00, 1),\
+    ('Sarah', 'Davis', 'Marketing Specialist', 55000.00, 2);\
+\
+SELECT d.dept_name, e.first_name, e.last_name, e.position\
+FROM departments d\
+JOIN employees e ON d.dept_id = e.dept_id\
+ORDER BY d.dept_name, e.last_name;\
+INSERT 0 2\
+INSERT 0 4\
+  dept_name  | first_name | last_name |       position       \
+-------------+------------+-----------+----------------------\
+ Engineering | Mike       | Brown     | DevOps Engineer\
+ Engineering | Jane       | Doe       | Senior Developer\
+ Engineering | John       | Smith     | Software Engineer\
+ Marketing   | Sarah      | Davis     | Marketing Specialist\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab8=# CREATE TABLE students (\
+    student_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    email VARCHAR(100) UNIQUE,\
+    enrollment_date DATE DEFAULT CURRENT_DATE\
+);\
+\
+CREATE TABLE courses (\
+    course_id SERIAL PRIMARY KEY,\
+    course_code VARCHAR(10) UNIQUE NOT NULL,\
+    course_name VARCHAR(100) NOT NULL,\
+    credits INTEGER NOT NULL,\
+    instructor VARCHAR(100)\
+);\
+CREATE TABLE\
+CREATE TABLE\
+lab8=# CREATE TABLE student_enrollments (\
+    enrollment_id SERIAL PRIMARY KEY,\
+    student_id INTEGER NOT NULL,\
+    course_id INTEGER NOT NULL,\
+    enrollment_date DATE DEFAULT CURRENT_DATE,\
+    grade CHAR(2),\
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,\
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE,\
+    UNIQUE(student_id, course_id)\
+);\
+CREATE TABLE\
+lab8=# INSERT INTO students (first_name, last_name, email) VALUES\
+    ('Alice', 'Johnson', 'alice@university.edu'),\
+    ('Bob', 'Smith', 'bob@university.edu'),\
+    ('Carol', 'Wilson', 'carol@university.edu');\
+\
+INSERT INTO courses (course_code, course_name, credits, instructor) VALUES\
+    ('CS101', 'Introduction to Programming', 3, 'Dr. Brown'),\
+    ('CS201', 'Data Structures', 4, 'Dr. Davis'),\
+    ('MATH101', 'Calculus I', 4, 'Dr. Wilson');\
+\
+INSERT INTO student_enrollments (student_id, course_id, grade) VALUES\
+    (1, 1, 'A'),\
+    (1, 2, 'B+'),\
+    (2, 1, 'A-'),\
+    (2, 3, 'B'),\
+    (3, 2, 'A'),\
+    (3, 3, 'A-');\
+INSERT 0 3\
+INSERT 0 3\
+INSERT 0 6\
+lab8=# SELECT\
+    s.first_name || ' ' || s.last_name AS student_name,\
+    c.course_code,\
+    c.course_name,\
+    se.grade,\
+    se.enrollment_date\
+FROM students s\
+JOIN student_enrollments se ON s.student_id = se.student_id\
+JOIN courses c ON se.course_id = c.course_id\
+ORDER BY s.last_name, c.course_code;\
+ student_name  | course_code |         course_name         | grade | enrollment_date \
+---------------+-------------+-----------------------------+-------+-----------------\
+ Alice Johnson | CS101       | Introduction to Programming | A     | 2026-11-03\
+ Alice Johnson | CS201       | Data Structures             | B+    | 2026-11-03\
+ Bob Smith     | CS101       | Introduction to Programming | A-    | 2026-11-03\
+ Bob Smith     | MATH101     | Calculus I                  | B     | 2026-11-03\
+ Carol Wilson  | CS201       | Data Structures             | A     | 2026-11-03\
+ Carol Wilson  | MATH101     | Calculus I                  | A-    | 2026-11-03\
+(6 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab8=# SELECT s.first_name, s.last_name, se.grade\
+FROM students s\
+JOIN student_enrollments se ON s.student_id = se.student_id\
+JOIN courses c ON se.course_id = c.course_id\
+WHERE c.course_code = 'CS101';\
+ first_name | last_name | grade \
+------------+-----------+-------\
+ Alice      | Johnson   | A \
+ Bob        | Smith     | A-\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab8=# SELECT c.course_code, c.course_name, c.credits, se.grade\
+FROM courses c\
+JOIN student_enrollments se ON c.course_id = se.course_id\
+JOIN students s ON se.student_id = s.student_id\
+WHERE s.email = 'alice@university.edu';\
+ course_code |         course_name         | credits | grade \
+-------------+-----------------------------+---------+-------\
+ CS101       | Introduction to Programming |       3 | A \
+ CS201       | Data Structures             |       4 | B+\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab8=# INSERT INTO student_enrollments (student_id, course_id) VALUES (1, 1);\
+ERROR:  duplicate key value violates unique constraint "student_enrollments_student_id_course_id_key"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (student_id, course_id)=(1, 1) already exists.\
+lab8=# \\dt\
+                  \uc0\u1057 \u1087 \u1080 \u1089 \u1086 \u1082  \u1086 \u1090 \u1085 \u1086 \u1096 \u1077 \u1085 \u1080 \u1081 \
+ \uc0\u1057 \u1093 \u1077 \u1084 \u1072   |         \u1048 \u1084 \u1103          |   \u1058 \u1080 \u1087    |  \u1042 \u1083 \u1072 \u1076 \u1077 \u1083 \u1077 \u1094   \
+--------+---------------------+---------+------------\
+ public | blog_posts          | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | comments            | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | courses             | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | departments         | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | employees           | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | student_enrollments | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | students            | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | user_profiles       | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+}

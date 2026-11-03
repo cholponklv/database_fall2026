@@ -1,0 +1,348 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 lab15=# CREATE TABLE employees (\
+    employee_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    department VARCHAR(50),\
+    salary NUMERIC(10,2),\
+    manager_id INTEGER REFERENCES employees(employee_id),\
+    tenure INTEGER\
+);\
+\
+CREATE TABLE orders (\
+    order_id SERIAL PRIMARY KEY,\
+    product_name VARCHAR(100),\
+    region_id INTEGER,\
+    amount NUMERIC(12,2),\
+    status VARCHAR(30)\
+);\
+\
+CREATE TABLE warehouse_1 (\
+    product_id INTEGER PRIMARY KEY,\
+    product_name VARCHAR(100),\
+    quantity INTEGER\
+);\
+\
+CREATE TABLE warehouse_2 (\
+    product_id INTEGER PRIMARY KEY,\
+    product_name VARCHAR(100),\
+    quantity INTEGER\
+);\
+\
+CREATE TABLE sales (\
+    sale_id SERIAL PRIMARY KEY,\
+    product_name VARCHAR(100),\
+    year INTEGER,\
+    sales_amount NUMERIC(10,2)\
+);\
+\
+INSERT INTO employees (first_name, last_name, department, salary, manager_id, tenure) VALUES\
+    ('Ruslan', 'Aliev', 'Management', 150000, NULL, 10),\
+    ('Aigul', 'Sadykova', 'Engineering', 120000, 1, 8),\
+    ('Timur', 'Bekov', 'Engineering', 95000, 2, 6),\
+    ('Nurlan', 'Omurov', 'Engineering', 95000, 2, 3),\
+    ('Alina', 'Karimova', 'Engineering', 70000, 3, 1),\
+    ('Bakyt', 'Mamatov', 'Sales', 90000, 1, 7),\
+    ('Gulnara', 'Sultanova', 'Sales', 60000, 6, 4),\
+    ('Erlan', 'Toktogulov', 'Sales', 55000, 6, 2),\
+    ('Meerim', 'Bekova', 'HR', 65000, 1, 5),\
+    ('Tilek', 'Usubaliev', 'HR', 50000, 9, 1);\
+\
+INSERT INTO orders (product_name, region_id, amount, status) VALUES\
+    ('Laptop', 1, 600000, 'High Priority'),\
+    ('Laptop', 1, 550000, 'Low Priority'),\
+    ('Phone', 2, 400000, 'Medium Priority'),\
+    ('Phone', 2, 300000, 'Medium Priority'),\
+    ('Tablet', 3, 200000, 'Low Priority'),\
+    ('Monitor', 3, 150000, 'Urgent');\
+\
+INSERT INTO warehouse_1 (product_id, product_name, quantity) VALUES\
+    (1, 'Laptop', 5), (2, 'Mouse', 0), (3, 'Keyboard', 10), (4, 'Monitor', 0);\
+\
+INSERT INTO warehouse_2 (product_id, product_name, quantity) VALUES\
+    (2, 'Mouse', 0), (3, 'Keyboard', 7), (4, 'Monitor', 3), (5, 'Webcam', 0);\
+\
+INSERT INTO sales (product_name, year, sales_amount) VALUES\
+    ('Laptop', 2022, 100), ('Laptop', 2022, 50), ('Laptop', 2023, 150), ('Laptop', 2024, 200),\
+    ('Phone', 2022, 80), ('Phone', 2023, 120),\
+    ('Tablet', 2023, 50), ('Tablet', 2024, 70);\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+INSERT 0 10\
+INSERT 0 6\
+INSERT 0 4\
+INSERT 0 4\
+INSERT 0 8\
+lab15=# SELECT first_name, last_name, salary FROM employees WHERE salary > (\
+    SELECT AVG(salary)\
+    FROM employees\
+);\
+ first_name | last_name |  salary   \
+------------+-----------+-----------\
+ Ruslan     | Aliev     | 150000.00\
+ Aigul      | Sadykova  | 120000.00\
+ Timur      | Bekov     |  95000.00\
+ Nurlan     | Omurov    |  95000.00\
+ Bakyt      | Mamatov   |  90000.00\
+(5 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab15=# WITH regional_sales AS (\
+    SELECT region_id, SUM(amount) AS total_sales\
+    FROM orders\
+    GROUP BY region_id\
+)\
+SELECT region_id, total_sales FROM regional_sales WHERE total_sales > 1000000;\
+ region_id | total_sales \
+-----------+-------------\
+         1 |  1150000.00\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab15=# WITH RECURSIVE org_chart AS (\
+    SELECT employee_id, first_name, last_name, manager_id\
+    FROM employees\
+    WHERE manager_id IS NULL\
+    UNION ALL\
+    SELECT e.employee_id, e.first_name, e.last_name, e.manager_id\
+    FROM employees e\
+    INNER JOIN org_chart oc ON e.manager_id = oc.employee_id\
+)\
+SELECT * FROM org_chart;\
+ employee_id | first_name | last_name  | manager_id \
+-------------+------------+------------+------------\
+           1 | Ruslan     | Aliev      |           \
+           2 | Aigul      | Sadykova   |          1\
+           6 | Bakyt      | Mamatov    |          1\
+           9 | Meerim     | Bekova     |          1\
+           3 | Timur      | Bekov      |          2\
+           4 | Nurlan     | Omurov     |          2\
+           7 | Gulnara    | Sultanova  |          6\
+           8 | Erlan      | Toktogulov |          6\
+          10 | Tilek      | Usubaliev  |          9\
+           5 | Alina      | Karimova   |          3\
+(10 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab15=# SELECT product_name FROM warehouse_1 UNION SELECT product_name FROM warehouse_2;\
+\
+SELECT product_id FROM warehouse_1 WHERE quantity = 0 INTERSECT SELECT product_id FROM warehouse_2 WHERE quantity = 0;\
+ product_name \
+--------------\
+ Mouse\
+ Laptop\
+ Webcam\
+ Keyboard\
+ Monitor\
+(5 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+ product_id \
+------------\
+          2\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab15=# SELECT product_name FROM warehouse_1 UNION ALL SELECT product_name FROM warehouse_2;\
+\
+SELECT product_name FROM warehouse_1 EXCEPT SELECT product_name FROM warehouse_2;\
+ product_name \
+--------------\
+ Laptop\
+ Mouse\
+ Keyboard\
+ Monitor\
+ Mouse\
+ Keyboard\
+ Monitor\
+ Webcam\
+(8 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+ product_name \
+--------------\
+ Laptop\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab15=# SELECT\
+    first_name,\
+    last_name,\
+    department,\
+    salary,\
+    RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_salary_rank\
+FROM employees;\
+ first_name | last_name  | department  |  salary   | dept_salary_rank \
+------------+------------+-------------+-----------+------------------\
+ Aigul      | Sadykova   | Engineering | 120000.00 |                1\
+ Timur      | Bekov      | Engineering |  95000.00 |                2\
+ Nurlan     | Omurov     | Engineering |  95000.00 |                2\
+ Alina      | Karimova   | Engineering |  70000.00 |                4\
+ Meerim     | Bekova     | HR          |  65000.00 |                1\
+ Tilek      | Usubaliev  | HR          |  50000.00 |                2\
+ Ruslan     | Aliev      | Management  | 150000.00 |                1\
+ Bakyt      | Mamatov    | Sales       |  90000.00 |                1\
+ Gulnara    | Sultanova  | Sales       |  60000.00 |                2\
+ Erlan      | Toktogulov | Sales       |  55000.00 |                3\
+(10 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab15=# SELECT\
+    first_name,\
+    department,\
+    salary,\
+    ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS row_num,\
+    DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dense_rank,\
+    LAG(salary) OVER (PARTITION BY department ORDER BY salary DESC) AS prev_salary,\
+    LEAD(salary) OVER (PARTITION BY department ORDER BY salary DESC) AS next_salary\
+FROM employees\
+WHERE department = 'Engineering';\
+ first_name | department  |  salary   | row_num | dense_rank | prev_salary | next_salary \
+------------+-------------+-----------+---------+------------+-------------+-------------\
+ Aigul      | Engineering | 120000.00 |       1 |          1 |             |    95000.00\
+ Timur      | Engineering |  95000.00 |       2 |          2 |   120000.00 |    95000.00\
+ Nurlan     | Engineering |  95000.00 |       3 |          2 |    95000.00 |    70000.00\
+ Alina      | Engineering |  70000.00 |       4 |          3 |    95000.00 |            \
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab15=# SELECT\
+    product_name,\
+    SUM(CASE WHEN year = 2022 THEN sales_amount ELSE 0 END) AS year_2022,\
+    SUM(CASE WHEN year = 2023 THEN sales_amount ELSE 0 END) AS year_2023,\
+    SUM(CASE WHEN year = 2024 THEN sales_amount ELSE 0 END) AS year_2024\
+FROM sales\
+GROUP BY product_name;\
+ product_name | year_2022 | year_2023 | year_2024 \
+--------------+-----------+-----------+-----------\
+ Tablet       |         0 |     50.00 |     70.00\
+ Phone        |     80.00 |    120.00 |         0\
+ Laptop       |    150.00 |    150.00 |    200.00\
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab15=# CREATE TABLE pivoted_sales AS\
+SELECT\
+    product_name,\
+    SUM(CASE WHEN year = 2022 THEN sales_amount ELSE 0 END) AS year_2022,\
+    SUM(CASE WHEN year = 2023 THEN sales_amount ELSE 0 END) AS year_2023,\
+    SUM(CASE WHEN year = 2024 THEN sales_amount ELSE 0 END) AS year_2024\
+FROM sales\
+GROUP BY product_name;\
+\
+SELECT product_name, '2022' AS year, year_2022 AS sales_amount FROM pivoted_sales\
+UNION ALL\
+SELECT product_name, '2023' AS year, year_2023 AS sales_amount FROM pivoted_sales\
+UNION ALL\
+SELECT product_name, '2024' AS year, year_2024 AS sales_amount FROM pivoted_sales\
+ORDER BY product_name, year;\
+SELECT 3\
+ product_name | year | sales_amount \
+--------------+------+--------------\
+ Laptop       | 2022 |       150.00\
+ Laptop       | 2023 |       150.00\
+ Laptop       | 2024 |       200.00\
+ Phone        | 2022 |        80.00\
+ Phone        | 2023 |       120.00\
+ Phone        | 2024 |            0\
+ Tablet       | 2022 |            0\
+ Tablet       | 2023 |        50.00\
+ Tablet       | 2024 |        70.00\
+(9 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab15=# SELECT\
+    employee_id,\
+    SUM(salary) OVER (PARTITION BY department) AS total_dept_salary,\
+    AVG(salary) FILTER (WHERE tenure > 5) OVER () AS avg_salary_senior\
+FROM employees;\
+\
+SELECT product_name, status FROM orders ORDER BY\
+    CASE status\
+        WHEN 'High Priority' THEN 1\
+        WHEN 'Medium Priority' THEN 2\
+        WHEN 'Low Priority' THEN 3\
+        ELSE 4\
+    END;\
+ employee_id | total_dept_salary |  avg_salary_senior  \
+-------------+-------------------+---------------------\
+           2 |         380000.00 | 113750.000000000000\
+           3 |         380000.00 | 113750.000000000000\
+           4 |         380000.00 | 113750.000000000000\
+           5 |         380000.00 | 113750.000000000000\
+           9 |         115000.00 | 113750.000000000000\
+          10 |         115000.00 | 113750.000000000000\
+           1 |         150000.00 | 113750.000000000000\
+           8 |         205000.00 | 113750.000000000000\
+           7 |         205000.00 | 113750.000000000000\
+           6 |         205000.00 | 113750.000000000000\
+(10 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+ product_name |     status      \
+--------------+-----------------\
+ Laptop       | High Priority\
+ Phone        | Medium Priority\
+ Phone        | Medium Priority\
+ Laptop       | Low Priority\
+ Tablet       | Low Priority\
+ Monitor      | Urgent\
+(6 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab15=# EXPLAIN SELECT first_name, last_name FROM employees WHERE department = 'Engineering';\
+\
+EXPLAIN ANALYZE SELECT first_name, last_name FROM employees WHERE department = 'Engineering';\
+\
+SELECT first_name, last_name, salary FROM employees ORDER BY salary DESC LIMIT 3;\
+                         QUERY PLAN                         \
+------------------------------------------------------------\
+ Seq Scan on employees  (cost=0.00..12.38 rows=1 width=236)\
+   Filter: ((department)::text = 'Engineering'::text)\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+                                              QUERY PLAN                                              \
+------------------------------------------------------------------------------------------------------\
+ Seq Scan on employees  (cost=0.00..12.38 rows=1 width=236) (actual time=0.101..0.105 rows=4 loops=1)\
+   Filter: ((department)::text = 'Engineering'::text)\
+   Rows Removed by Filter: 6\
+ Planning Time: 0.129 ms\
+ Execution Time: 0.128 ms\
+(5 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+ first_name | last_name |  salary   \
+------------+-----------+-----------\
+ Ruslan     | Aliev     | 150000.00\
+ Aigul      | Sadykova  | 120000.00\
+ Timur      | Bekov     |  95000.00\
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab15=# CREATE TABLE big_orders AS\
+SELECT g AS order_id, (g % 5000) + 1 AS customer_id, round((random() * 1000)::numeric, 2) AS amount\
+FROM generate_series(1, 200000) g;\
+\
+EXPLAIN ANALYZE SELECT * FROM big_orders WHERE customer_id = 42;\
+\
+CREATE INDEX idx_big_orders_customer_id ON big_orders(customer_id);\
+ANALYZE big_orders;\
+\
+EXPLAIN ANALYZE SELECT * FROM big_orders WHERE customer_id = 42;\
+SELECT 200000\
+                                                 QUERY PLAN                                                 \
+------------------------------------------------------------------------------------------------------------\
+ Seq Scan on big_orders  (cost=0.00..2720.00 rows=653 width=40) (actual time=0.023..20.838 rows=40 loops=1)\
+   Filter: (customer_id = 42)\
+   Rows Removed by Filter: 199960\
+ Planning Time: 0.210 ms\
+ Execution Time: 20.854 ms\
+(5 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+CREATE INDEX\
+ANALYZE\
+                                                             QUERY PLAN                                                              \
+-------------------------------------------------------------------------------------------------------------------------------------\
+ Bitmap Heap Scan on big_orders  (cost=4.60..142.10 rows=40 width=14) (actual time=0.021..0.048 rows=40 loops=1)\
+   Recheck Cond: (customer_id = 42)\
+   Heap Blocks: exact=40\
+   ->  Bitmap Index Scan on idx_big_orders_customer_id  (cost=0.00..4.59 rows=40 width=0) (actual time=0.016..0.016 rows=40 loops=1)\
+         Index Cond: (customer_id = 42)\
+ Planning Time: 0.242 ms\
+ Execution Time: 0.059 ms\
+(7 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+}

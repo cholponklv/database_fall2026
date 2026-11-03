@@ -1,0 +1,117 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 postgres=# CREATE DATABASE lab11;\
+CREATE DATABASE\
+postgres=# \\c lab11\
+\uc0\u1042 \u1099  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1099  \u1082  \u1073 \u1072 \u1079 \u1077  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093  "lab11" \u1082 \u1072 \u1082  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100  "cholponklv".\
+lab11=# CREATE TABLE Students (\
+    student_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50),\
+    last_name VARCHAR(50),\
+    birth_date DATE\
+);\
+\
+INSERT INTO Students (first_name, last_name, birth_date) VALUES ('Aibek', 'Sharshenov', '2002-05-12');\
+\
+SELECT * FROM Students;\
+\
+INSERT INTO Students (first_name, last_name, birth_date) VALUES\
+    ('Ainura', 'Toktomamatova', '2001-09-23'),\
+    ('Bakyt', 'Mamatov', '2003-01-15'),\
+    ('Gulzat', 'Sultanova', '2002-07-30');\
+\
+SELECT * FROM Students;\
+CREATE TABLE\
+INSERT 0 1\
+ student_id | first_name | last_name  | birth_date \
+------------+------------+------------+------------\
+          1 | Aibek      | Sharshenov | 2002-05-12\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+INSERT 0 3\
+ student_id | first_name |   last_name   | birth_date \
+------------+------------+---------------+------------\
+          1 | Aibek      | Sharshenov    | 2002-05-12\
+          2 | Ainura     | Toktomamatova | 2001-09-23\
+          3 | Bakyt      | Mamatov       | 2003-01-15\
+          4 | Gulzat     | Sultanova     | 2002-07-30\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab11=# UPDATE Students SET birth_date = '2002-05-15' WHERE first_name = 'Aibek' AND last_name = 'Sharshenov';\
+\
+SELECT * FROM Students;\
+UPDATE 1\
+ student_id | first_name |   last_name   | birth_date \
+------------+------------+---------------+------------\
+          2 | Ainura     | Toktomamatova | 2001-09-23\
+          3 | Bakyt      | Mamatov       | 2003-01-15\
+          4 | Gulzat     | Sultanova     | 2002-07-30\
+          1 | Aibek      | Sharshenov    | 2002-05-15\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab11=# DELETE FROM Students WHERE first_name = 'Gulzat' AND last_name = 'Sultanova';\
+\
+DELETE FROM Students WHERE birth_date < '2002-01-01';\
+\
+SELECT * FROM Students;\
+DELETE 1\
+DELETE 1\
+ student_id | first_name | last_name  | birth_date \
+------------+------------+------------+------------\
+          3 | Bakyt      | Mamatov    | 2003-01-15\
+          1 | Aibek      | Sharshenov | 2002-05-15\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab11=# COPY Students(first_name, last_name, birth_date) FROM '/Users/cholponklv/Documents/work/database/lab11/students.csv' DELIMITER ',' CSV HEADER;\
+\
+SELECT * FROM Students;\
+COPY 3\
+ student_id | first_name | last_name  | birth_date \
+------------+------------+------------+------------\
+          3 | Bakyt      | Mamatov    | 2003-01-15\
+          1 | Aibek      | Sharshenov | 2002-05-15\
+          5 | Nursultan  | Isakov     | 2002-04-10\
+          6 | Meerim     | Bekova     | 2003-06-12\
+          7 | Tilek      | Usubaliev  | 2001-11-05\
+(5 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab11=# \\copy Students(first_name, last_name, birth_date) FROM '/Users/cholponklv/Documents/work/database/lab11/students.csv' DELIMITER ',' CSV HEADER\
+COPY 3\
+lab11=# UPDATE Students SET last_name = 'Bekov' WHERE last_name IN ('Uulu', 'Isakov');\
+\
+SELECT * FROM Students;\
+\
+DELETE FROM Students WHERE student_id IN (2, 3, 5);\
+\
+SELECT * FROM Students;\
+UPDATE 2\
+ student_id | first_name | last_name  | birth_date \
+------------+------------+------------+------------\
+          3 | Bakyt      | Mamatov    | 2003-01-15\
+          1 | Aibek      | Sharshenov | 2002-05-15\
+          6 | Meerim     | Bekova     | 2003-06-12\
+          7 | Tilek      | Usubaliev  | 2001-11-05\
+          9 | Meerim     | Bekova     | 2003-06-12\
+         10 | Tilek      | Usubaliev  | 2001-11-05\
+          5 | Nursultan  | Bekov      | 2002-04-10\
+          8 | Nursultan  | Bekov      | 2002-04-10\
+(8 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+DELETE 2\
+ student_id | first_name | last_name  | birth_date \
+------------+------------+------------+------------\
+          1 | Aibek      | Sharshenov | 2002-05-15\
+          6 | Meerim     | Bekova     | 2003-06-12\
+          7 | Tilek      | Usubaliev  | 2001-11-05\
+          9 | Meerim     | Bekova     | 2003-06-12\
+         10 | Tilek      | Usubaliev  | 2001-11-05\
+          8 | Nursultan  | Bekov      | 2002-04-10\
+(6 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab11=# \
+}

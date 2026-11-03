@@ -1,0 +1,927 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 lab17=# CREATE TABLE departments (\
+    department_id SERIAL PRIMARY KEY,\
+    department_name VARCHAR(50) NOT NULL\
+);\
+\
+CREATE TABLE employees (\
+    employee_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    email VARCHAR(100),\
+    department VARCHAR(50),\
+    salary NUMERIC(10,2)\
+);\
+\
+CREATE TABLE products (\
+    product_id SERIAL PRIMARY KEY,\
+    product_name VARCHAR(100) NOT NULL,\
+    price NUMERIC(10,2),\
+    category VARCHAR(50)\
+);\
+\
+CREATE TABLE customers (\
+    customer_id SERIAL PRIMARY KEY,\
+    name VARCHAR(100),\
+    email VARCHAR(100),\
+    city VARCHAR(50)\
+);\
+\
+CREATE TABLE orders (\
+    order_id SERIAL PRIMARY KEY,\
+    customer_id INTEGER REFERENCES customers(customer_id),\
+    order_date DATE,\
+    total_amount NUMERIC(10,2)\
+);\
+\
+CREATE TABLE customer_feedback (\
+    feedback_id SERIAL PRIMARY KEY,\
+    customer_id INTEGER,\
+    comment TEXT\
+);\
+\
+CREATE TABLE sales_data (\
+    sale_id SERIAL PRIMARY KEY,\
+    product_name VARCHAR(100),\
+    amount NUMERIC(10,2),\
+    sale_date DATE\
+);\
+\
+CREATE TABLE log_table (\
+    log_id SERIAL PRIMARY KEY,\
+    message TEXT\
+);\
+\
+CREATE TABLE temp_data (\
+    id SERIAL PRIMARY KEY,\
+    value TEXT\
+);\
+\
+INSERT INTO departments (department_name) VALUES ('IT'), ('Sales'), ('HR');\
+\
+INSERT INTO employees (first_name, last_name, email, department, salary) VALUES\
+    ('Aibek', 'Sharshenov', 'aibek@company.com', 'IT', 90000),\
+    ('Ainura', 'Toktomamatova', NULL, 'IT', 85000),\
+    ('Bakyt', 'Mamatov', 'bakyt@company.com', 'Sales', 60000),\
+    ('Gulzat', 'Sultanova', 'gulzat@company.com', 'HR', 55000);\
+\
+INSERT INTO products (product_name, price, category) VALUES\
+    ('Laptop', 1200.00, 'Electronics'),\
+    ('Mouse', 25.50, 'Electronics'),\
+    ('Notebook', 3.20, 'Stationery'),\
+    ('Desk', 250.00, 'Furniture');\
+\
+INSERT INTO customers (name, email, city) VALUES\
+    ('Alice Johnson', 'alice@example.com', 'Bishkek'),\
+    ('Bob Smith', 'bob@example.com', 'Osh'),\
+    ('Carol Davis', 'carol@example.com', 'Karakol');\
+\
+INSERT INTO orders (customer_id, order_date, total_amount) VALUES\
+    (1, '2024-02-10', 150.00),\
+    (2, '2024-03-15', 250.00),\
+    (3, '2024-05-20', 90.00);\
+\
+INSERT INTO customer_feedback (customer_id, comment) VALUES\
+    (1, 'Great service, fast delivery'),\
+    (2, 'The "premium" package was worth it'),\
+    (3, 'Okay, but packaging was damaged');\
+\
+INSERT INTO sales_data (product_name, amount, sale_date) VALUES\
+    ('Laptop', 1200.00, '2024-01-10'),\
+    ('Mouse', NULL, '2024-01-12');\
+\
+INSERT INTO log_table (message) VALUES ('started'), ('finished');\
+INSERT INTO temp_data (value) VALUES ('x'), ('y');\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+INSERT 0 3\
+INSERT 0 4\
+INSERT 0 4\
+INSERT 0 3\
+INSERT 0 3\
+INSERT 0 3\
+INSERT 0 2\
+INSERT 0 2\
+INSERT 0 2\
+lab17=# /q\
+lab17-# \
+lab17-# \\q\
+cholponklv@MacBook-Air-cholponklv lab17 % printf 'first_name,last_name,email\\nNursultan,Isakov,nursultan@company.com\\nMeerim,Bekova,meerim@company.com\\n' > /tmp/new_employees.csv\
+cholponklv@MacBook-Air-cholponklv lab17 % printf 'product_id,product_name,price,category\\n10,Chair,80.00,Furniture\\n11,Lamp,abc,Furniture\\n12,Pen,1.10,Stationery\\n' > /tmp/products_with_errors.csv\
+cholponklv@MacBook-Air-cholponklv lab17 % printf 'product_id,product_name,price,category\\n20,Caf\'e9 Table,150.00,Furniture\\n' > /tmp/products_utf8.csv\
+cholponklv@MacBook-Air-cholponklv lab17 % printf 'sale_id,product_name,amount,sale_date\\n10,Phone,NULL,2024-02-01\\n11,Tablet,300.00,2024-02-02\\n' > /tmp/sales.csv\
+cholponklv@MacBook-Air-cholponklv lab17 % psql -d lab17\
+psql (16.11 (Homebrew))\
+\uc0\u1042 \u1074 \u1077 \u1076 \u1080 \u1090 \u1077  "help", \u1095 \u1090 \u1086 \u1073 \u1099  \u1087 \u1086 \u1083 \u1091 \u1095 \u1080 \u1090 \u1100  \u1089 \u1087 \u1088 \u1072 \u1074 \u1082 \u1091 .\
+\
+lab17=# COPY products TO '/tmp/products.csv' WITH CSV HEADER;\
+COPY 4\
+lab17=# TRUNCATE products;\
+COPY products FROM '/tmp/products.csv' WITH CSV HEADER;\
+SELECT count(*) FROM products;\
+TRUNCATE TABLE\
+COPY 4\
+ count \
+-------\
+     4\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab17=# COPY employees TO '/tmp/employees.txt' WITH DELIMITER '|' NULL 'N/A' CSV HEADER;\
+\
+COPY employees(first_name, last_name, email) FROM '/tmp/new_employees.csv' WITH CSV HEADER;\
+\
+COPY (SELECT * FROM employees WHERE department = 'IT') TO '/tmp/it_employees.csv' WITH CSV HEADER;\
+\
+SELECT employee_id, first_name, department, email FROM employees ORDER BY 1;\
+COPY 4\
+COPY 2\
+COPY 2\
+ employee_id | first_name | department |         email         \
+-------------+------------+------------+-----------------------\
+           1 | Aibek      | IT         | aibek@company.com\
+           2 | Ainura     | IT         | \
+           3 | Bakyt      | Sales      | bakyt@company.com\
+           4 | Gulzat     | HR         | gulzat@company.com\
+           5 | Nursultan  |            | nursultan@company.com\
+           6 | Meerim     |            | meerim@company.com\
+(6 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab17=# COPY customers TO '/tmp/customers.csv' WITH CSV HEADER DELIMITER ';' QUOTE '"';\
+\
+COPY orders TO '/tmp/orders.csv' WITH (FORMAT CSV, HEADER, FORCE_QUOTE (order_date));\
+COPY 3\
+COPY 3\
+lab17=# COPY products FROM '/tmp/products_with_errors.csv' WITH CSV HEADER ON_ERROR IGNORE;\
+\
+COPY products FROM '/tmp/products_with_errors.csv' WITH CSV HEADER;\
+ERROR:  syntax error at or near "ON_ERROR"\
+\uc0\u1057 \u1058 \u1056 \u1054 \u1050 \u1040  1: ...M '/tmp/products_with_errors.csv' WITH CSV HEADER ON_ERROR I...\
+                                                               ^\
+ERROR:  invalid input syntax for type numeric: "abc"\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY products, line 3, column price: "abc"\
+lab17=# CREATE TEMP TABLE products_staging (\
+    product_id TEXT,\
+    product_name TEXT,\
+    price TEXT,\
+    category TEXT\
+);\
+\
+COPY products_staging FROM '/tmp/products_with_errors.csv' WITH CSV HEADER;\
+\
+INSERT INTO products (product_id, product_name, price, category)\
+SELECT product_id::INTEGER, product_name, price::NUMERIC, category\
+FROM products_staging\
+WHERE price ~ '^[0-9]+(\\.[0-9]+)?$';\
+CREATE TABLE\
+COPY 3\
+INSERT 0 2\
+lab17=# COPY products FROM '/tmp/products_utf8.csv' WITH CSV HEADER ENCODING 'UTF8';\
+\
+SELECT * FROM products ORDER BY 1;\
+COPY 1\
+ product_id | product_name |  price  |  category   \
+------------+--------------+---------+-------------\
+          1 | Laptop       | 1200.00 | Electronics\
+          2 | Mouse        |   25.50 | Electronics\
+          3 | Notebook     |    3.20 | Stationery\
+          4 | Desk         |  250.00 | Furniture\
+         10 | Chair        |   80.00 | Furniture\
+         12 | Pen          |    1.10 | Stationery\
+         20 | Caf\'e9 Table   |  150.00 | Furniture\
+(7 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab17=# COPY customer_feedback TO '/tmp/feedback.csv' WITH CSV HEADER DELIMITER ',' QUOTE '"' ESCAPE '"';\
+\
+COPY sales_data FROM '/tmp/sales.csv' WITH CSV HEADER NULL 'NULL';\
+\
+SELECT * FROM sales_data ORDER BY 1;\
+COPY 3\
+COPY 2\
+ sale_id | product_name | amount  | sale_date  \
+---------+--------------+---------+------------\
+       1 | Laptop       | 1200.00 | 2024-01-10\
+       2 | Mouse        |         | 2024-01-12\
+      10 | Phone        |         | 2024-02-01\
+      11 | Tablet       |  300.00 | 2024-02-02\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab17=# \\q\
+cholponklv@MacBook-Air-cholponklv lab17 % cat /tmp/feedback.csv\
+feedback_id,customer_id,comment\
+1,1,"Great service, fast delivery"\
+2,2,"The ""premium"" package was worth it"\
+3,3,"Okay, but packaging was damaged"\
+cholponklv@MacBook-Air-cholponklv lab17 % pg_dump -h localhost -U cholponklv -d lab17 > backup.sql\
+pg_dump -h localhost -U cholponklv -d lab17 -Fc > backup.dump\
+pg_dump -h localhost -U cholponklv -d lab17 -t employees -t departments > tables_backup.sql\
+pg_dump -h localhost -U cholponklv -d lab17 -Fc -v > backup_verbose.dump\
+pg_dump: \uc0\u1087 \u1086 \u1089 \u1083 \u1077 \u1076 \u1085 \u1080 \u1081  \u1089 \u1080 \u1089 \u1090 \u1077 \u1084 \u1085 \u1099 \u1081  OID: 16383\
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1088 \u1072 \u1089 \u1096 \u1080 \u1088 \u1077 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1074 \u1099 \u1103 \u1074 \u1083 \u1077 \u1085 \u1080 \u1077  \u1095 \u1083 \u1077 \u1085 \u1086 \u1074  \u1088 \u1072 \u1089 \u1096 \u1080 \u1088 \u1077 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1089 \u1093 \u1077 \u1084 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1092 \u1091 \u1085 \u1082 \u1094 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1090 \u1080 \u1087 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1086 \u1094 \u1077 \u1076 \u1091 \u1088 \u1085 \u1099 \u1093  \u1103 \u1079 \u1099 \u1082 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1072 \u1075 \u1088 \u1077 \u1075 \u1072 \u1090 \u1085 \u1099 \u1093  \u1092 \u1091 \u1085 \u1082 \u1094 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1086 \u1087 \u1077 \u1088 \u1072 \u1090 \u1086 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1084 \u1077 \u1090 \u1086 \u1076 \u1086 \u1074  \u1076 \u1086 \u1089 \u1090 \u1091 \u1087 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1082 \u1083 \u1072 \u1089 \u1089 \u1086 \u1074  \u1086 \u1087 \u1077 \u1088 \u1072 \u1090 \u1086 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1089 \u1077 \u1084 \u1077 \u1081 \u1089 \u1090 \u1074  \u1086 \u1087 \u1077 \u1088 \u1072 \u1090 \u1086 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1072 \u1085 \u1072 \u1083 \u1080 \u1079 \u1072 \u1090 \u1086 \u1088 \u1086 \u1074  \u1090 \u1077 \u1082 \u1089 \u1090 \u1086 \u1074 \u1086 \u1075 \u1086  \u1087 \u1086 \u1080 \u1089 \u1082 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1096 \u1072 \u1073 \u1083 \u1086 \u1085 \u1086 \u1074  \u1090 \u1077 \u1082 \u1089 \u1090 \u1086 \u1074 \u1086 \u1075 \u1086  \u1087 \u1086 \u1080 \u1089 \u1082 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1089 \u1083 \u1086 \u1074 \u1072 \u1088 \u1077 \u1081  \u1090 \u1077 \u1082 \u1089 \u1090 \u1086 \u1074 \u1086 \u1075 \u1086  \u1087 \u1086 \u1080 \u1089 \u1082 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1082 \u1086 \u1085 \u1092 \u1080 \u1075 \u1091 \u1088 \u1072 \u1094 \u1080 \u1081  \u1090 \u1077 \u1082 \u1089 \u1090 \u1086 \u1074 \u1086 \u1075 \u1086  \u1087 \u1086 \u1080 \u1089 \u1082 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1086 \u1073 \u1086 \u1083 \u1086 \u1095 \u1077 \u1082  \u1089 \u1090 \u1086 \u1088 \u1086 \u1085 \u1085 \u1080 \u1093  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1089 \u1090 \u1086 \u1088 \u1086 \u1085 \u1085 \u1080 \u1093  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1072 \u1074  \u1087 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1087 \u1088 \u1072 \u1074 \u1080 \u1083  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1087 \u1088 \u1077 \u1086 \u1073 \u1088 \u1072 \u1079 \u1086 \u1074 \u1072 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1080 \u1074 \u1077 \u1076 \u1077 \u1085 \u1080 \u1081  \u1090 \u1080 \u1087 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1077 \u1086 \u1073 \u1088 \u1072 \u1079 \u1086 \u1074 \u1072 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1085 \u1072 \u1089 \u1083 \u1077 \u1076 \u1086 \u1074 \u1072 \u1085 \u1080 \u1080  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1089 \u1086 \u1073 \u1099 \u1090 \u1080 \u1081 \u1085 \u1099 \u1093  \u1090 \u1088 \u1080 \u1075 \u1075 \u1077 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1087 \u1086 \u1080 \u1089 \u1082  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094  \u1088 \u1072 \u1089 \u1096 \u1080 \u1088 \u1077 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1087 \u1086 \u1080 \u1089 \u1082  \u1089 \u1074 \u1103 \u1079 \u1077 \u1081  \u1085 \u1072 \u1089 \u1083 \u1077 \u1076 \u1086 \u1074 \u1072 \u1085 \u1080 \u1103 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1089 \u1090 \u1086 \u1083 \u1073 \u1094 \u1072 \u1093  \u1080 \u1085 \u1090 \u1077 \u1088 \u1077 \u1089 \u1091 \u1102 \u1097 \u1080 \u1093  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \
+pg_dump: \uc0\u1087 \u1086 \u1080 \u1089 \u1082  \u1074 \u1099 \u1088 \u1072 \u1078 \u1077 \u1085 \u1080 \u1081  \u1087 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102  \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \
+pg_dump: \uc0\u1087 \u1086 \u1084 \u1077 \u1090 \u1082 \u1072  \u1085 \u1072 \u1089 \u1083 \u1077 \u1076 \u1086 \u1074 \u1072 \u1085 \u1085 \u1099 \u1093  \u1089 \u1090 \u1086 \u1083 \u1073 \u1094 \u1086 \u1074  \u1074  \u1087 \u1086 \u1076 \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072 \u1093 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1089 \u1077 \u1082 \u1094 \u1080 \u1086 \u1085 \u1080 \u1088 \u1086 \u1074 \u1072 \u1085 \u1080 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1076 \u1077 \u1082 \u1089 \u1086 \u1074 \
+pg_dump: \uc0\u1087 \u1086 \u1084 \u1077 \u1090 \u1082 \u1072  \u1080 \u1085 \u1076 \u1077 \u1082 \u1089 \u1086 \u1074  \u1074  \u1089 \u1077 \u1082 \u1094 \u1080 \u1086 \u1085 \u1080 \u1088 \u1086 \u1074 \u1072 \u1085 \u1085 \u1099 \u1093  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072 \u1093 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1088 \u1072 \u1089 \u1096 \u1080 \u1088 \u1077 \u1085 \u1085 \u1086 \u1081  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1086 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1090 \u1088 \u1080 \u1075 \u1075 \u1077 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1072 \u1074 \u1080 \u1083  \u1087 \u1077 \u1088 \u1077 \u1079 \u1072 \u1087 \u1080 \u1089 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1080 \u1090 \u1080 \u1082 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1080 \u1090 \u1080 \u1082  \u1079 \u1072 \u1097 \u1080 \u1090 \u1099  \u1085 \u1072  \u1091 \u1088 \u1086 \u1074 \u1085 \u1077  \u1089 \u1090 \u1088 \u1086 \u1082 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1091 \u1073 \u1083 \u1080 \u1082 \u1072 \u1094 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072 \u1093 , \u1074 \u1082 \u1083 \u1102 \u1095 \u1105 \u1085 \u1085 \u1099 \u1093  \u1074  \u1087 \u1091 \u1073 \u1083 \u1080 \u1082 \u1072 \u1094 \u1080 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1089 \u1093 \u1077 \u1084 \u1072 \u1093 , \u1074 \u1082 \u1083 \u1102 \u1095 \u1105 \u1085 \u1085 \u1099 \u1093  \u1074  \u1087 \u1091 \u1073 \u1083 \u1080 \u1082 \u1072 \u1094 \u1080 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1076 \u1087 \u1080 \u1089 \u1086 \u1082 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1073 \u1086 \u1083 \u1100 \u1096 \u1080 \u1093  \u1086 \u1073 \u1098 \u1077 \u1082 \u1090 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1079 \u1072 \u1074 \u1080 \u1089 \u1080 \u1084 \u1086 \u1089 \u1090 \u1103 \u1093 \
+pg_dump: \uc0\u1089 \u1086 \u1093 \u1088 \u1072 \u1085 \u1077 \u1085 \u1080 \u1077  \u1082 \u1086 \u1076 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  (UTF8)\
+pg_dump: \uc0\u1089 \u1086 \u1093 \u1088 \u1072 \u1085 \u1077 \u1085 \u1080 \u1077  standard_conforming_strings (on)\
+pg_dump: \uc0\u1089 \u1086 \u1093 \u1088 \u1072 \u1085 \u1077 \u1085 \u1080 \u1077  search_path = \
+pg_dump: \uc0\u1089 \u1086 \u1093 \u1088 \u1072 \u1085 \u1077 \u1085 \u1080 \u1077  \u1086 \u1087 \u1088 \u1077 \u1076 \u1077 \u1083 \u1077 \u1085 \u1080 \u1103  \u1073 \u1072 \u1079 \u1099  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093 \
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.customer_feedback"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.customers"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.departments"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.employees"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.log_table"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.orders"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.products"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.sales_data"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.temp_data"\
+cholponklv@MacBook-Air-cholponklv lab17 % createdb new_database\
+pg_restore -h localhost -U cholponklv -d new_database backup.dump\
+psql -d new_database -c '\\dt'\
+                 \uc0\u1057 \u1087 \u1080 \u1089 \u1086 \u1082  \u1086 \u1090 \u1085 \u1086 \u1096 \u1077 \u1085 \u1080 \u1081 \
+ \uc0\u1057 \u1093 \u1077 \u1084 \u1072   |        \u1048 \u1084 \u1103         |   \u1058 \u1080 \u1087    |  \u1042 \u1083 \u1072 \u1076 \u1077 \u1083 \u1077 \u1094   \
+--------+-------------------+---------+------------\
+ public | customer_feedback | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | customers         | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | departments       | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | employees         | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | log_table         | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | orders            | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | products          | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | sales_data        | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | temp_data         | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+(9 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+cholponklv@MacBook-Air-cholponklv lab17 % createdb tbl_only\
+pg_restore -h localhost -U cholponklv -d tbl_only -t employees backup.dump\
+createdb par_db\
+pg_restore -h localhost -U cholponklv -d par_db -j 4 backup.dump\
+cholponklv@MacBook-Air-cholponklv lab17 % pg_dump -h localhost -U cholponklv -d lab17 -s > schema_only.sql\
+pg_dump -h localhost -U cholponklv -d lab17 -a > data_only.sql\
+pg_dump -h localhost -U cholponklv -d lab17 -T log_table -T temp_data > backup_without_logs.sql\
+cholponklv@MacBook-Air-cholponklv lab17 % pg_dumpall -h localhost -U cholponklv > /tmp/full_cluster_backup.sql\
+cholponklv@MacBook-Air-cholponklv lab17 % pg_dump -h localhost -U cholponklv -d lab17 -Fc --verbose > full_production_backup.dump\
+pg_dump -h localhost -U cholponklv -d lab17 -Fc -O > backup_without_ownership.dump\
+pg_dump: \uc0\u1087 \u1086 \u1089 \u1083 \u1077 \u1076 \u1085 \u1080 \u1081  \u1089 \u1080 \u1089 \u1090 \u1077 \u1084 \u1085 \u1099 \u1081  OID: 16383\
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1088 \u1072 \u1089 \u1096 \u1080 \u1088 \u1077 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1074 \u1099 \u1103 \u1074 \u1083 \u1077 \u1085 \u1080 \u1077  \u1095 \u1083 \u1077 \u1085 \u1086 \u1074  \u1088 \u1072 \u1089 \u1096 \u1080 \u1088 \u1077 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1089 \u1093 \u1077 \u1084 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1092 \u1091 \u1085 \u1082 \u1094 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1090 \u1080 \u1087 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1086 \u1094 \u1077 \u1076 \u1091 \u1088 \u1085 \u1099 \u1093  \u1103 \u1079 \u1099 \u1082 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1072 \u1075 \u1088 \u1077 \u1075 \u1072 \u1090 \u1085 \u1099 \u1093  \u1092 \u1091 \u1085 \u1082 \u1094 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1086 \u1087 \u1077 \u1088 \u1072 \u1090 \u1086 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1084 \u1077 \u1090 \u1086 \u1076 \u1086 \u1074  \u1076 \u1086 \u1089 \u1090 \u1091 \u1087 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1082 \u1083 \u1072 \u1089 \u1089 \u1086 \u1074  \u1086 \u1087 \u1077 \u1088 \u1072 \u1090 \u1086 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1089 \u1077 \u1084 \u1077 \u1081 \u1089 \u1090 \u1074  \u1086 \u1087 \u1077 \u1088 \u1072 \u1090 \u1086 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1072 \u1085 \u1072 \u1083 \u1080 \u1079 \u1072 \u1090 \u1086 \u1088 \u1086 \u1074  \u1090 \u1077 \u1082 \u1089 \u1090 \u1086 \u1074 \u1086 \u1075 \u1086  \u1087 \u1086 \u1080 \u1089 \u1082 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1096 \u1072 \u1073 \u1083 \u1086 \u1085 \u1086 \u1074  \u1090 \u1077 \u1082 \u1089 \u1090 \u1086 \u1074 \u1086 \u1075 \u1086  \u1087 \u1086 \u1080 \u1089 \u1082 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1089 \u1083 \u1086 \u1074 \u1072 \u1088 \u1077 \u1081  \u1090 \u1077 \u1082 \u1089 \u1090 \u1086 \u1074 \u1086 \u1075 \u1086  \u1087 \u1086 \u1080 \u1089 \u1082 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1082 \u1086 \u1085 \u1092 \u1080 \u1075 \u1091 \u1088 \u1072 \u1094 \u1080 \u1081  \u1090 \u1077 \u1082 \u1089 \u1090 \u1086 \u1074 \u1086 \u1075 \u1086  \u1087 \u1086 \u1080 \u1089 \u1082 \u1072 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1086 \u1073 \u1086 \u1083 \u1086 \u1095 \u1077 \u1082  \u1089 \u1090 \u1086 \u1088 \u1086 \u1085 \u1085 \u1080 \u1093  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1089 \u1090 \u1086 \u1088 \u1086 \u1085 \u1085 \u1080 \u1093  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1072 \u1074  \u1087 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1087 \u1088 \u1072 \u1074 \u1080 \u1083  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100 \u1089 \u1082 \u1080 \u1093  \u1087 \u1088 \u1077 \u1086 \u1073 \u1088 \u1072 \u1079 \u1086 \u1074 \u1072 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1080 \u1074 \u1077 \u1076 \u1077 \u1085 \u1080 \u1081  \u1090 \u1080 \u1087 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1077 \u1086 \u1073 \u1088 \u1072 \u1079 \u1086 \u1074 \u1072 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1085 \u1072 \u1089 \u1083 \u1077 \u1076 \u1086 \u1074 \u1072 \u1085 \u1080 \u1080  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1089 \u1086 \u1073 \u1099 \u1090 \u1080 \u1081 \u1085 \u1099 \u1093  \u1090 \u1088 \u1080 \u1075 \u1075 \u1077 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1087 \u1086 \u1080 \u1089 \u1082  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094  \u1088 \u1072 \u1089 \u1096 \u1080 \u1088 \u1077 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1087 \u1086 \u1080 \u1089 \u1082  \u1089 \u1074 \u1103 \u1079 \u1077 \u1081  \u1085 \u1072 \u1089 \u1083 \u1077 \u1076 \u1086 \u1074 \u1072 \u1085 \u1080 \u1103 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1089 \u1090 \u1086 \u1083 \u1073 \u1094 \u1072 \u1093  \u1080 \u1085 \u1090 \u1077 \u1088 \u1077 \u1089 \u1091 \u1102 \u1097 \u1080 \u1093  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \
+pg_dump: \uc0\u1087 \u1086 \u1080 \u1089 \u1082  \u1074 \u1099 \u1088 \u1072 \u1078 \u1077 \u1085 \u1080 \u1081  \u1087 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102  \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \
+pg_dump: \uc0\u1087 \u1086 \u1084 \u1077 \u1090 \u1082 \u1072  \u1085 \u1072 \u1089 \u1083 \u1077 \u1076 \u1086 \u1074 \u1072 \u1085 \u1085 \u1099 \u1093  \u1089 \u1090 \u1086 \u1083 \u1073 \u1094 \u1086 \u1074  \u1074  \u1087 \u1086 \u1076 \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072 \u1093 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1089 \u1077 \u1082 \u1094 \u1080 \u1086 \u1085 \u1080 \u1088 \u1086 \u1074 \u1072 \u1085 \u1080 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1076 \u1077 \u1082 \u1089 \u1086 \u1074 \
+pg_dump: \uc0\u1087 \u1086 \u1084 \u1077 \u1090 \u1082 \u1072  \u1080 \u1085 \u1076 \u1077 \u1082 \u1089 \u1086 \u1074  \u1074  \u1089 \u1077 \u1082 \u1094 \u1080 \u1086 \u1085 \u1080 \u1088 \u1086 \u1074 \u1072 \u1085 \u1085 \u1099 \u1093  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072 \u1093 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1088 \u1072 \u1089 \u1096 \u1080 \u1088 \u1077 \u1085 \u1085 \u1086 \u1081  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1086 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1090 \u1088 \u1080 \u1075 \u1075 \u1077 \u1088 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1088 \u1072 \u1074 \u1080 \u1083  \u1087 \u1077 \u1088 \u1077 \u1079 \u1072 \u1087 \u1080 \u1089 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1080 \u1090 \u1080 \u1082 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1083 \u1080 \u1090 \u1080 \u1082  \u1079 \u1072 \u1097 \u1080 \u1090 \u1099  \u1085 \u1072  \u1091 \u1088 \u1086 \u1074 \u1085 \u1077  \u1089 \u1090 \u1088 \u1086 \u1082 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1091 \u1073 \u1083 \u1080 \u1082 \u1072 \u1094 \u1080 \u1081 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072 \u1093 , \u1074 \u1082 \u1083 \u1102 \u1095 \u1105 \u1085 \u1085 \u1099 \u1093  \u1074  \u1087 \u1091 \u1073 \u1083 \u1080 \u1082 \u1072 \u1094 \u1080 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1089 \u1093 \u1077 \u1084 \u1072 \u1093 , \u1074 \u1082 \u1083 \u1102 \u1095 \u1105 \u1085 \u1085 \u1099 \u1093  \u1074  \u1087 \u1091 \u1073 \u1083 \u1080 \u1082 \u1072 \u1094 \u1080 \u1080 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1087 \u1086 \u1076 \u1087 \u1080 \u1089 \u1086 \u1082 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1073 \u1086 \u1083 \u1100 \u1096 \u1080 \u1093  \u1086 \u1073 \u1098 \u1077 \u1082 \u1090 \u1086 \u1074 \
+pg_dump: \uc0\u1095 \u1090 \u1077 \u1085 \u1080 \u1077  \u1080 \u1085 \u1092 \u1086 \u1088 \u1084 \u1072 \u1094 \u1080 \u1080  \u1086  \u1079 \u1072 \u1074 \u1080 \u1089 \u1080 \u1084 \u1086 \u1089 \u1090 \u1103 \u1093 \
+pg_dump: \uc0\u1089 \u1086 \u1093 \u1088 \u1072 \u1085 \u1077 \u1085 \u1080 \u1077  \u1082 \u1086 \u1076 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  (UTF8)\
+pg_dump: \uc0\u1089 \u1086 \u1093 \u1088 \u1072 \u1085 \u1077 \u1085 \u1080 \u1077  standard_conforming_strings (on)\
+pg_dump: \uc0\u1089 \u1086 \u1093 \u1088 \u1072 \u1085 \u1077 \u1085 \u1080 \u1077  search_path = \
+pg_dump: \uc0\u1089 \u1086 \u1093 \u1088 \u1072 \u1085 \u1077 \u1085 \u1080 \u1077  \u1086 \u1087 \u1088 \u1077 \u1076 \u1077 \u1083 \u1077 \u1085 \u1080 \u1103  \u1073 \u1072 \u1079 \u1099  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093 \
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.customer_feedback"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.customers"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.departments"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.employees"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.log_table"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.orders"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.products"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.sales_data"\
+pg_dump: \uc0\u1074 \u1099 \u1075 \u1088 \u1091 \u1079 \u1082 \u1072  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1084 \u1086 \u1075 \u1086  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "public.temp_data"\
+cholponklv@MacBook-Air-cholponklv lab17 % cat > backup.sh <<'SCRIPT'\
+#!/bin/bash\
+DATE=$(date +%Y%m%d_%H%M%S)\
+BACKUP_DIR="$HOME/backups/postgresql"\
+DB_NAME="lab17"\
+\
+mkdir -p "$BACKUP_DIR"\
+\
+pg_dump -h localhost -U cholponklv -d $DB_NAME -Fc > "$BACKUP_DIR/$\{DB_NAME\}_$\{DATE\}.dump"\
+\
+find "$BACKUP_DIR" -name "$\{DB_NAME\}_*.dump" -mtime +7 -delete\
+SCRIPT\
+chmod +x backup.sh\
+./backup.sh\
+ls ~/backups/postgresql\
+lab17_20261103_140741.dump\
+cholponklv@MacBook-Air-cholponklv lab17 % pg_restore --list backup.dump\
+createdb test_restore\
+pg_restore -d test_restore backup.dump\
+psql -d test_restore -c 'SELECT count(*) FROM customers'\
+;\
+; Archive created at 2026-11-03 14:07:04 +06\
+;     dbname: lab17\
+;     TOC Entries: 68\
+;     Compression: gzip\
+;     Dump Version: 1.15-0\
+;     Format: CUSTOM\
+;     Integer: 4 bytes\
+;     Offset: 8 bytes\
+;     Dumped from database version: 16.11 (Homebrew)\
+;     Dumped by pg_dump version: 16.11 (Homebrew)\
+;\
+;\
+; Selected TOC Entries:\
+;\
+228; 1259 29452 TABLE public customer_feedback cholponklv\
+227; 1259 29451 SEQUENCE public customer_feedback_feedback_id_seq cholponklv\
+3803; 0 0 SEQUENCE OWNED BY public customer_feedback_feedback_id_seq cholponklv\
+224; 1259 29433 TABLE public customers cholponklv\
+223; 1259 29432 SEQUENCE public customers_customer_id_seq cholponklv\
+3804; 0 0 SEQUENCE OWNED BY public customers_customer_id_seq cholponklv\
+218; 1259 29412 TABLE public departments cholponklv\
+217; 1259 29411 SEQUENCE public departments_department_id_seq cholponklv\
+3805; 0 0 SEQUENCE OWNED BY public departments_department_id_seq cholponklv\
+220; 1259 29419 TABLE public employees cholponklv\
+219; 1259 29418 SEQUENCE public employees_employee_id_seq cholponklv\
+3806; 0 0 SEQUENCE OWNED BY public employees_employee_id_seq cholponklv\
+232; 1259 29468 TABLE public log_table cholponklv\
+231; 1259 29467 SEQUENCE public log_table_log_id_seq cholponklv\
+3807; 0 0 SEQUENCE OWNED BY public log_table_log_id_seq cholponklv\
+226; 1259 29440 TABLE public orders cholponklv\
+225; 1259 29439 SEQUENCE public orders_order_id_seq cholponklv\
+3808; 0 0 SEQUENCE OWNED BY public orders_order_id_seq cholponklv\
+222; 1259 29426 TABLE public products cholponklv\
+221; 1259 29425 SEQUENCE public products_product_id_seq cholponklv\
+3809; 0 0 SEQUENCE OWNED BY public products_product_id_seq cholponklv\
+230; 1259 29461 TABLE public sales_data cholponklv\
+229; 1259 29460 SEQUENCE public sales_data_sale_id_seq cholponklv\
+3810; 0 0 SEQUENCE OWNED BY public sales_data_sale_id_seq cholponklv\
+234; 1259 29477 TABLE public temp_data cholponklv\
+233; 1259 29476 SEQUENCE public temp_data_id_seq cholponklv\
+3811; 0 0 SEQUENCE OWNED BY public temp_data_id_seq cholponklv\
+3613; 2604 29455 DEFAULT public customer_feedback feedback_id cholponklv\
+3611; 2604 29436 DEFAULT public customers customer_id cholponklv\
+3608; 2604 29415 DEFAULT public departments department_id cholponklv\
+3609; 2604 29422 DEFAULT public employees employee_id cholponklv\
+3615; 2604 29471 DEFAULT public log_table log_id cholponklv\
+3612; 2604 29443 DEFAULT public orders order_id cholponklv\
+3610; 2604 29429 DEFAULT public products product_id cholponklv\
+3614; 2604 29464 DEFAULT public sales_data sale_id cholponklv\
+3616; 2604 29480 DEFAULT public temp_data id cholponklv\
+3790; 0 29452 TABLE DATA public customer_feedback cholponklv\
+3786; 0 29433 TABLE DATA public customers cholponklv\
+3780; 0 29412 TABLE DATA public departments cholponklv\
+3782; 0 29419 TABLE DATA public employees cholponklv\
+3794; 0 29468 TABLE DATA public log_table cholponklv\
+3788; 0 29440 TABLE DATA public orders cholponklv\
+3784; 0 29426 TABLE DATA public products cholponklv\
+3792; 0 29461 TABLE DATA public sales_data cholponklv\
+3796; 0 29477 TABLE DATA public temp_data cholponklv\
+3812; 0 0 SEQUENCE SET public customer_feedback_feedback_id_seq cholponklv\
+3813; 0 0 SEQUENCE SET public customers_customer_id_seq cholponklv\
+3814; 0 0 SEQUENCE SET public departments_department_id_seq cholponklv\
+3815; 0 0 SEQUENCE SET public employees_employee_id_seq cholponklv\
+3816; 0 0 SEQUENCE SET public log_table_log_id_seq cholponklv\
+3817; 0 0 SEQUENCE SET public orders_order_id_seq cholponklv\
+3818; 0 0 SEQUENCE SET public products_product_id_seq cholponklv\
+3819; 0 0 SEQUENCE SET public sales_data_sale_id_seq cholponklv\
+3820; 0 0 SEQUENCE SET public temp_data_id_seq cholponklv\
+3628; 2606 29459 CONSTRAINT public customer_feedback customer_feedback_pkey cholponklv\
+3624; 2606 29438 CONSTRAINT public customers customers_pkey cholponklv\
+3618; 2606 29417 CONSTRAINT public departments departments_pkey cholponklv\
+3620; 2606 29424 CONSTRAINT public employees employees_pkey cholponklv\
+3632; 2606 29475 CONSTRAINT public log_table log_table_pkey cholponklv\
+3626; 2606 29445 CONSTRAINT public orders orders_pkey cholponklv\
+3622; 2606 29431 CONSTRAINT public products products_pkey cholponklv\
+3630; 2606 29466 CONSTRAINT public sales_data sales_data_pkey cholponklv\
+3634; 2606 29484 CONSTRAINT public temp_data temp_data_pkey cholponklv\
+3635; 2606 29446 FK CONSTRAINT public orders orders_customer_id_fkey cholponklv\
+ count \
+-------\
+     3\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+cholponklv@MacBook-Air-cholponklv lab17 % pg_restore --list backup.dump\
+createdb test_restore\
+pg_restore -d test_restore backup.dump\
+psql -d test_restore -c 'SELECT count(*) FROM customers'\
+;\
+; Archive created at 2026-11-03 14:07:04 +06\
+;     dbname: lab17\
+;     TOC Entries: 68\
+;     Compression: gzip\
+;     Dump Version: 1.15-0\
+;     Format: CUSTOM\
+;     Integer: 4 bytes\
+;     Offset: 8 bytes\
+;     Dumped from database version: 16.11 (Homebrew)\
+;     Dumped by pg_dump version: 16.11 (Homebrew)\
+;\
+;\
+; Selected TOC Entries:\
+;\
+228; 1259 29452 TABLE public customer_feedback cholponklv\
+227; 1259 29451 SEQUENCE public customer_feedback_feedback_id_seq cholponklv\
+3803; 0 0 SEQUENCE OWNED BY public customer_feedback_feedback_id_seq cholponklv\
+224; 1259 29433 TABLE public customers cholponklv\
+223; 1259 29432 SEQUENCE public customers_customer_id_seq cholponklv\
+3804; 0 0 SEQUENCE OWNED BY public customers_customer_id_seq cholponklv\
+218; 1259 29412 TABLE public departments cholponklv\
+217; 1259 29411 SEQUENCE public departments_department_id_seq cholponklv\
+3805; 0 0 SEQUENCE OWNED BY public departments_department_id_seq cholponklv\
+220; 1259 29419 TABLE public employees cholponklv\
+219; 1259 29418 SEQUENCE public employees_employee_id_seq cholponklv\
+3806; 0 0 SEQUENCE OWNED BY public employees_employee_id_seq cholponklv\
+232; 1259 29468 TABLE public log_table cholponklv\
+231; 1259 29467 SEQUENCE public log_table_log_id_seq cholponklv\
+3807; 0 0 SEQUENCE OWNED BY public log_table_log_id_seq cholponklv\
+226; 1259 29440 TABLE public orders cholponklv\
+225; 1259 29439 SEQUENCE public orders_order_id_seq cholponklv\
+3808; 0 0 SEQUENCE OWNED BY public orders_order_id_seq cholponklv\
+222; 1259 29426 TABLE public products cholponklv\
+221; 1259 29425 SEQUENCE public products_product_id_seq cholponklv\
+3809; 0 0 SEQUENCE OWNED BY public products_product_id_seq cholponklv\
+230; 1259 29461 TABLE public sales_data cholponklv\
+229; 1259 29460 SEQUENCE public sales_data_sale_id_seq cholponklv\
+3810; 0 0 SEQUENCE OWNED BY public sales_data_sale_id_seq cholponklv\
+234; 1259 29477 TABLE public temp_data cholponklv\
+233; 1259 29476 SEQUENCE public temp_data_id_seq cholponklv\
+3811; 0 0 SEQUENCE OWNED BY public temp_data_id_seq cholponklv\
+3613; 2604 29455 DEFAULT public customer_feedback feedback_id cholponklv\
+3611; 2604 29436 DEFAULT public customers customer_id cholponklv\
+3608; 2604 29415 DEFAULT public departments department_id cholponklv\
+3609; 2604 29422 DEFAULT public employees employee_id cholponklv\
+3615; 2604 29471 DEFAULT public log_table log_id cholponklv\
+3612; 2604 29443 DEFAULT public orders order_id cholponklv\
+3610; 2604 29429 DEFAULT public products product_id cholponklv\
+3614; 2604 29464 DEFAULT public sales_data sale_id cholponklv\
+3616; 2604 29480 DEFAULT public temp_data id cholponklv\
+3790; 0 29452 TABLE DATA public customer_feedback cholponklv\
+3786; 0 29433 TABLE DATA public customers cholponklv\
+3780; 0 29412 TABLE DATA public departments cholponklv\
+3782; 0 29419 TABLE DATA public employees cholponklv\
+3794; 0 29468 TABLE DATA public log_table cholponklv\
+3788; 0 29440 TABLE DATA public orders cholponklv\
+3784; 0 29426 TABLE DATA public products cholponklv\
+3792; 0 29461 TABLE DATA public sales_data cholponklv\
+3796; 0 29477 TABLE DATA public temp_data cholponklv\
+3812; 0 0 SEQUENCE SET public customer_feedback_feedback_id_seq cholponklv\
+3813; 0 0 SEQUENCE SET public customers_customer_id_seq cholponklv\
+3814; 0 0 SEQUENCE SET public departments_department_id_seq cholponklv\
+3815; 0 0 SEQUENCE SET public employees_employee_id_seq cholponklv\
+3816; 0 0 SEQUENCE SET public log_table_log_id_seq cholponklv\
+3817; 0 0 SEQUENCE SET public orders_order_id_seq cholponklv\
+3818; 0 0 SEQUENCE SET public products_product_id_seq cholponklv\
+3819; 0 0 SEQUENCE SET public sales_data_sale_id_seq cholponklv\
+3820; 0 0 SEQUENCE SET public temp_data_id_seq cholponklv\
+3628; 2606 29459 CONSTRAINT public customer_feedback customer_feedback_pkey cholponklv\
+3624; 2606 29438 CONSTRAINT public customers customers_pkey cholponklv\
+3618; 2606 29417 CONSTRAINT public departments departments_pkey cholponklv\
+3620; 2606 29424 CONSTRAINT public employees employees_pkey cholponklv\
+3632; 2606 29475 CONSTRAINT public log_table log_table_pkey cholponklv\
+3626; 2606 29445 CONSTRAINT public orders orders_pkey cholponklv\
+3622; 2606 29431 CONSTRAINT public products products_pkey cholponklv\
+3630; 2606 29466 CONSTRAINT public sales_data sales_data_pkey cholponklv\
+3634; 2606 29484 CONSTRAINT public temp_data temp_data_pkey cholponklv\
+3635; 2606 29446 FK CONSTRAINT public orders orders_customer_id_fkey cholponklv\
+createdb: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1086 \u1079 \u1076 \u1072 \u1090 \u1100  \u1073 \u1072 \u1079 \u1091  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093  \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : ERROR:  database "test_restore" already exists\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "customer_feedback" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE TABLE public.customer_feedback (\
+    feedback_id integer NOT NULL,\
+    customer_id integer,\
+    comment text\
+);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "customer_feedback_feedback_id_seq" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE SEQUENCE public.customer_feedback_feedback_id_seq\
+    AS integer\
+    START WITH 1\
+    INCREMENT BY 1\
+    NO MINVALUE\
+    NO MAXVALUE\
+    CACHE 1;\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "customers" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE TABLE public.customers (\
+    customer_id integer NOT NULL,\
+    name character varying(100),\
+    email character varying(100),\
+    city character varying(50)\
+);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "customers_customer_id_seq" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE SEQUENCE public.customers_customer_id_seq\
+    AS integer\
+    START WITH 1\
+    INCREMENT BY 1\
+    NO MINVALUE\
+    NO MAXVALUE\
+    CACHE 1;\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "departments" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE TABLE public.departments (\
+    department_id integer NOT NULL,\
+    department_name character varying(50) NOT NULL\
+);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "departments_department_id_seq" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE SEQUENCE public.departments_department_id_seq\
+    AS integer\
+    START WITH 1\
+    INCREMENT BY 1\
+    NO MINVALUE\
+    NO MAXVALUE\
+    CACHE 1;\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "employees" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE TABLE public.employees (\
+    employee_id integer NOT NULL,\
+    first_name character varying(50) NOT NULL,\
+    last_name character varying(50) NOT NULL,\
+    email character varying(100),\
+    department character varying(50),\
+    salary numeric(10,2)\
+);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "employees_employee_id_seq" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE SEQUENCE public.employees_employee_id_seq\
+    AS integer\
+    START WITH 1\
+    INCREMENT BY 1\
+    NO MINVALUE\
+    NO MAXVALUE\
+    CACHE 1;\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "log_table" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE TABLE public.log_table (\
+    log_id integer NOT NULL,\
+    message text\
+);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "log_table_log_id_seq" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE SEQUENCE public.log_table_log_id_seq\
+    AS integer\
+    START WITH 1\
+    INCREMENT BY 1\
+    NO MINVALUE\
+    NO MAXVALUE\
+    CACHE 1;\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "orders" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE TABLE public.orders (\
+    order_id integer NOT NULL,\
+    customer_id integer,\
+    order_date date,\
+    total_amount numeric(10,2)\
+);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "orders_order_id_seq" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE SEQUENCE public.orders_order_id_seq\
+    AS integer\
+    START WITH 1\
+    INCREMENT BY 1\
+    NO MINVALUE\
+    NO MAXVALUE\
+    CACHE 1;\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "products" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE TABLE public.products (\
+    product_id integer NOT NULL,\
+    product_name character varying(100) NOT NULL,\
+    price numeric(10,2),\
+    category character varying(50)\
+);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "products_product_id_seq" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE SEQUENCE public.products_product_id_seq\
+    AS integer\
+    START WITH 1\
+    INCREMENT BY 1\
+    NO MINVALUE\
+    NO MAXVALUE\
+    CACHE 1;\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "sales_data" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE TABLE public.sales_data (\
+    sale_id integer NOT NULL,\
+    product_name character varying(100),\
+    amount numeric(10,2),\
+    sale_date date\
+);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "sales_data_sale_id_seq" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE SEQUENCE public.sales_data_sale_id_seq\
+    AS integer\
+    START WITH 1\
+    INCREMENT BY 1\
+    NO MINVALUE\
+    NO MAXVALUE\
+    CACHE 1;\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "temp_data" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE TABLE public.temp_data (\
+    id integer NOT NULL,\
+    value text\
+);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  relation "temp_data_id_seq" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : CREATE SEQUENCE public.temp_data_id_seq\
+    AS integer\
+    START WITH 1\
+    INCREMENT BY 1\
+    NO MINVALUE\
+    NO MAXVALUE\
+    CACHE 1;\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1073 \u1086 \u1081  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1099  COPY \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "customer_feedback": ERROR:  duplicate key value violates unique constraint "customer_feedback_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (feedback_id)=(1) already exists.\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY customer_feedback, line 1\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1073 \u1086 \u1081  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1099  COPY \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "customers": ERROR:  duplicate key value violates unique constraint "customers_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (customer_id)=(1) already exists.\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY customers, line 1\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1073 \u1086 \u1081  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1099  COPY \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "departments": ERROR:  duplicate key value violates unique constraint "departments_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (department_id)=(1) already exists.\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY departments, line 1\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1073 \u1086 \u1081  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1099  COPY \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "employees": ERROR:  duplicate key value violates unique constraint "employees_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (employee_id)=(1) already exists.\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY employees, line 1\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1073 \u1086 \u1081  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1099  COPY \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "log_table": ERROR:  duplicate key value violates unique constraint "log_table_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (log_id)=(1) already exists.\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY log_table, line 1\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1073 \u1086 \u1081  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1099  COPY \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "orders": ERROR:  duplicate key value violates unique constraint "orders_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (order_id)=(1) already exists.\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY orders, line 1\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1073 \u1086 \u1081  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1099  COPY \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "products": ERROR:  duplicate key value violates unique constraint "products_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (product_id)=(1) already exists.\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY products, line 1\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1073 \u1086 \u1081  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1099  COPY \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "sales_data": ERROR:  duplicate key value violates unique constraint "sales_data_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (sale_id)=(1) already exists.\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY sales_data, line 1\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1089 \u1073 \u1086 \u1081  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1099  COPY \u1076 \u1083 \u1103  \u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1099  "temp_data": ERROR:  duplicate key value violates unique constraint "temp_data_pkey"\
+\uc0\u1055 \u1054 \u1044 \u1056 \u1054 \u1041 \u1053 \u1054 \u1057 \u1058 \u1048 :  Key (id)=(1) already exists.\
+\uc0\u1050 \u1054 \u1053 \u1058 \u1045 \u1050 \u1057 \u1058 :  COPY temp_data, line 1\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  multiple primary keys for table "customer_feedback" are not allowed\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.customer_feedback\
+    ADD CONSTRAINT customer_feedback_pkey PRIMARY KEY (feedback_id);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  multiple primary keys for table "customers" are not allowed\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.customers\
+    ADD CONSTRAINT customers_pkey PRIMARY KEY (customer_id);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  multiple primary keys for table "departments" are not allowed\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.departments\
+    ADD CONSTRAINT departments_pkey PRIMARY KEY (department_id);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  multiple primary keys for table "employees" are not allowed\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.employees\
+    ADD CONSTRAINT employees_pkey PRIMARY KEY (employee_id);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  multiple primary keys for table "log_table" are not allowed\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.log_table\
+    ADD CONSTRAINT log_table_pkey PRIMARY KEY (log_id);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  multiple primary keys for table "orders" are not allowed\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.orders\
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (order_id);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  multiple primary keys for table "products" are not allowed\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.products\
+    ADD CONSTRAINT products_pkey PRIMARY KEY (product_id);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  multiple primary keys for table "sales_data" are not allowed\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.sales_data\
+    ADD CONSTRAINT sales_data_pkey PRIMARY KEY (sale_id);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  multiple primary keys for table "temp_data" are not allowed\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.temp_data\
+    ADD CONSTRAINT temp_data_pkey PRIMARY KEY (id);\
+\
+\
+pg_restore: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : could not execute query: ERROR:  constraint "orders_customer_id_fkey" for relation "orders" already exists\
+\uc0\u1042 \u1099 \u1087 \u1086 \u1083 \u1085 \u1103 \u1083 \u1072 \u1089 \u1100  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 : ALTER TABLE ONLY public.orders\
+    ADD CONSTRAINT orders_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customers(customer_id);\
+\
+\
+pg_restore: \uc0\u1087 \u1088 \u1077 \u1076 \u1091 \u1087 \u1088 \u1077 \u1078 \u1076 \u1077 \u1085 \u1080 \u1077 : \u1087 \u1088 \u1080  \u1074 \u1086 \u1089 \u1089 \u1090 \u1072 \u1085 \u1086 \u1074 \u1083 \u1077 \u1085 \u1080 \u1080  \u1087 \u1088 \u1086 \u1080 \u1075 \u1085 \u1086 \u1088 \u1080 \u1088 \u1086 \u1074 \u1072 \u1085 \u1086  \u1086 \u1096 \u1080 \u1073 \u1086 \u1082 : 37\
+ count \
+-------\
+     3\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+cholponklv@MacBook-Air-cholponklv lab17 % P=$HOME/pg_pitr_demo\
+mkdir -p $P/wal_archive $P/base\
+initdb -D $P/data -A trust\
+cat >> $P/data/postgresql.conf <<CONF\
+port = 5433\
+wal_level = logical\
+archive_mode = on\
+archive_command = 'cp %p $P/wal_archive/%f'\
+CONF\
+pg_ctl -D $P/data -l $P/server.log -w start\
+\uc0\u1060 \u1072 \u1081 \u1083 \u1099 , \u1086 \u1090 \u1085 \u1086 \u1089 \u1103 \u1097 \u1080 \u1077 \u1089 \u1103  \u1082  \u1101 \u1090 \u1086 \u1081  \u1057 \u1059 \u1041 \u1044 , \u1073 \u1091 \u1076 \u1091 \u1090  \u1087 \u1088 \u1080 \u1085 \u1072 \u1076 \u1083 \u1077 \u1078 \u1072 \u1090 \u1100  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1102  "cholponklv".\
+\uc0\u1054 \u1090  \u1077 \u1075 \u1086  \u1080 \u1084 \u1077 \u1085 \u1080  \u1090 \u1072 \u1082 \u1078 \u1077  \u1073 \u1091 \u1076 \u1077 \u1090  \u1079 \u1072 \u1087 \u1091 \u1089 \u1082 \u1072 \u1090 \u1100 \u1089 \u1103  \u1087 \u1088 \u1086 \u1094 \u1077 \u1089 \u1089  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1072 .\
+\
+initdb: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1085 \u1077 \u1074 \u1077 \u1088 \u1085 \u1099 \u1077  \u1091 \u1089 \u1090 \u1072 \u1085 \u1086 \u1074 \u1082 \u1080  \u1083 \u1086 \u1082 \u1072 \u1083 \u1080 ; \u1087 \u1088 \u1086 \u1074 \u1077 \u1088 \u1100 \u1090 \u1077  \u1087 \u1077 \u1088 \u1077 \u1084 \u1077 \u1085 \u1085 \u1099 \u1077  \u1086 \u1082 \u1088 \u1091 \u1078 \u1077 \u1085 \u1080 \u1103  LANG \u1080  LC_*\
+zsh: no such file or directory: /Users/cholponklv/pg_pitr_demo/data/postgresql.conf\
+pg_ctl: \uc0\u1082 \u1072 \u1090 \u1072 \u1083 \u1086 \u1075  "/Users/cholponklv/pg_pitr_demo/data" \u1085 \u1077  \u1089 \u1091 \u1097 \u1077 \u1089 \u1090 \u1074 \u1091 \u1077 \u1090 \
+cholponklv@MacBook-Air-cholponklv lab17 % psql -p 5433 -d postgres -c "CREATE DATABASE shop"\
+psql -p 5433 -d shop -c "CREATE TABLE customers (customer_id SERIAL PRIMARY KEY, name VARCHAR(100))"\
+psql -p 5433 -d shop -c "INSERT INTO customers (name) VALUES ('Alice'), ('Bob'), ('Carol')"\
+pg_basebackup -h localhost -p 5433 -D $P/base -Ft -z -P\
+ls $P/base\
+psql: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1089 \u1086 \u1082 \u1077 \u1090  "/tmp/.s.PGSQL.5433" \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : No such file or directory\
+	\uc0\u1057 \u1077 \u1088 \u1074 \u1077 \u1088  \u1076 \u1077 \u1081 \u1089 \u1090 \u1074 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u1083 \u1086 \u1082 \u1072 \u1083 \u1100 \u1085 \u1086  \u1080  \u1087 \u1088 \u1080 \u1085 \u1080 \u1084 \u1072 \u1077 \u1090  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1080 \u1103  \u1095 \u1077 \u1088 \u1077 \u1079  \u1101 \u1090 \u1086 \u1090  \u1089 \u1086 \u1082 \u1077 \u1090 ?\
+psql: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1089 \u1086 \u1082 \u1077 \u1090  "/tmp/.s.PGSQL.5433" \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : No such file or directory\
+	\uc0\u1057 \u1077 \u1088 \u1074 \u1077 \u1088  \u1076 \u1077 \u1081 \u1089 \u1090 \u1074 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u1083 \u1086 \u1082 \u1072 \u1083 \u1100 \u1085 \u1086  \u1080  \u1087 \u1088 \u1080 \u1085 \u1080 \u1084 \u1072 \u1077 \u1090  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1080 \u1103  \u1095 \u1077 \u1088 \u1077 \u1079  \u1101 \u1090 \u1086 \u1090  \u1089 \u1086 \u1082 \u1077 \u1090 ?\
+psql: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1089 \u1086 \u1082 \u1077 \u1090  "/tmp/.s.PGSQL.5433" \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : No such file or directory\
+	\uc0\u1057 \u1077 \u1088 \u1074 \u1077 \u1088  \u1076 \u1077 \u1081 \u1089 \u1090 \u1074 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u1083 \u1086 \u1082 \u1072 \u1083 \u1100 \u1085 \u1086  \u1080  \u1087 \u1088 \u1080 \u1085 \u1080 \u1084 \u1072 \u1077 \u1090  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1080 \u1103  \u1095 \u1077 \u1088 \u1077 \u1079  \u1101 \u1090 \u1086 \u1090  \u1089 \u1086 \u1082 \u1077 \u1090 ?\
+pg_basebackup: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  "localhost" (::1), \u1087 \u1086 \u1088 \u1090 \u1091  5433 \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : FATAL:  no pg_hba.conf entry for replication connection from host "192.168.65.1", user "cholponklv", SSL off\
+cholponklv@MacBook-Air-cholponklv lab17 % psql -p 5433 -d shop -c "INSERT INTO customers (name) VALUES ('Dave'), ('Eve')"\
+psql -p 5433 -d shop -c "SELECT pg_create_restore_point('before_data_migration')"\
+sleep 2\
+psql -p 5433 -d shop -At -c "SELECT now()"\
+sleep 2\
+psql -p 5433 -d shop -c "DROP TABLE customers"\
+psql -p 5433 -d shop -c "SELECT pg_switch_wal()"\
+ls $P/wal_archive\
+psql: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1089 \u1086 \u1082 \u1077 \u1090  "/tmp/.s.PGSQL.5433" \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : No such file or directory\
+	\uc0\u1057 \u1077 \u1088 \u1074 \u1077 \u1088  \u1076 \u1077 \u1081 \u1089 \u1090 \u1074 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u1083 \u1086 \u1082 \u1072 \u1083 \u1100 \u1085 \u1086  \u1080  \u1087 \u1088 \u1080 \u1085 \u1080 \u1084 \u1072 \u1077 \u1090  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1080 \u1103  \u1095 \u1077 \u1088 \u1077 \u1079  \u1101 \u1090 \u1086 \u1090  \u1089 \u1086 \u1082 \u1077 \u1090 ?\
+psql: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1089 \u1086 \u1082 \u1077 \u1090  "/tmp/.s.PGSQL.5433" \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : No such file or directory\
+	\uc0\u1057 \u1077 \u1088 \u1074 \u1077 \u1088  \u1076 \u1077 \u1081 \u1089 \u1090 \u1074 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u1083 \u1086 \u1082 \u1072 \u1083 \u1100 \u1085 \u1086  \u1080  \u1087 \u1088 \u1080 \u1085 \u1080 \u1084 \u1072 \u1077 \u1090  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1080 \u1103  \u1095 \u1077 \u1088 \u1077 \u1079  \u1101 \u1090 \u1086 \u1090  \u1089 \u1086 \u1082 \u1077 \u1090 ?\
+psql: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1089 \u1086 \u1082 \u1077 \u1090  "/tmp/.s.PGSQL.5433" \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : No such file or directory\
+	\uc0\u1057 \u1077 \u1088 \u1074 \u1077 \u1088  \u1076 \u1077 \u1081 \u1089 \u1090 \u1074 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u1083 \u1086 \u1082 \u1072 \u1083 \u1100 \u1085 \u1086  \u1080  \u1087 \u1088 \u1080 \u1085 \u1080 \u1084 \u1072 \u1077 \u1090  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1080 \u1103  \u1095 \u1077 \u1088 \u1077 \u1079  \u1101 \u1090 \u1086 \u1090  \u1089 \u1086 \u1082 \u1077 \u1090 ?\
+psql: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1089 \u1086 \u1082 \u1077 \u1090  "/tmp/.s.PGSQL.5433" \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : No such file or directory\
+	\uc0\u1057 \u1077 \u1088 \u1074 \u1077 \u1088  \u1076 \u1077 \u1081 \u1089 \u1090 \u1074 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u1083 \u1086 \u1082 \u1072 \u1083 \u1100 \u1085 \u1086  \u1080  \u1087 \u1088 \u1080 \u1085 \u1080 \u1084 \u1072 \u1077 \u1090  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1080 \u1103  \u1095 \u1077 \u1088 \u1077 \u1079  \u1101 \u1090 \u1086 \u1090  \u1089 \u1086 \u1082 \u1077 \u1090 ?\
+psql: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1089 \u1086 \u1082 \u1077 \u1090  "/tmp/.s.PGSQL.5433" \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : No such file or directory\
+	\uc0\u1057 \u1077 \u1088 \u1074 \u1077 \u1088  \u1076 \u1077 \u1081 \u1089 \u1090 \u1074 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u1083 \u1086 \u1082 \u1072 \u1083 \u1100 \u1085 \u1086  \u1080  \u1087 \u1088 \u1080 \u1085 \u1080 \u1084 \u1072 \u1077 \u1090  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1080 \u1103  \u1095 \u1077 \u1088 \u1077 \u1079  \u1101 \u1090 \u1086 \u1090  \u1089 \u1086 \u1082 \u1077 \u1090 ?\
+cholponklv@MacBook-Air-cholponklv lab17 % pg_archivecleanup -n $P/wal_archive 000000010000000000000003\
+cholponklv@MacBook-Air-cholponklv lab17 % pg_ctl -D $P/data -m fast stop\
+mv $P/data $P/data_old\
+mkdir -m 700 $P/data\
+tar -xzf $P/base/base.tar.gz -C $P/data\
+tar -xzf $P/base/pg_wal.tar.gz -C $P/data/pg_wal\
+cat >> $P/data/postgresql.conf <<CONF\
+port = 5433\
+restore_command = 'cp $P/wal_archive/%f %p'\
+recovery_target_name = 'before_data_migration'\
+recovery_target_action = 'promote'\
+CONF\
+touch $P/data/recovery.signal\
+pg_ctl -D $P/data -l $P/server2.log -w start\
+sleep 3\
+psql -p 5433 -d shop -c "SELECT * FROM customers ORDER BY 1"\
+grep -E "recovery stopping|archive recovery complete" $P/server2.log\
+pg_ctl: \uc0\u1082 \u1072 \u1090 \u1072 \u1083 \u1086 \u1075  "/Users/cholponklv/pg_pitr_demo/data" \u1085 \u1077  \u1089 \u1091 \u1097 \u1077 \u1089 \u1090 \u1074 \u1091 \u1077 \u1090 \
+mv: rename /Users/cholponklv/pg_pitr_demo/data to /Users/cholponklv/pg_pitr_demo/data_old: No such file or directory\
+tar: Error opening archive: Failed to open '/Users/cholponklv/pg_pitr_demo/base/base.tar.gz'\
+tar: Error opening archive: Failed to open '/Users/cholponklv/pg_pitr_demo/base/pg_wal.tar.gz'\
+2026-11-03 08:08:27.933 GMT [98697] LOG:  skipping missing configuration file "/Users/cholponklv/pg_pitr_demo/data/postgresql.auto.conf"\
+2026-11-03 08:08:27.934 GMT [98697] LOG:  postmaster became multithreaded\
+2026-11-03 08:08:27.934 GMT [98697] HINT:  Set the LC_ALL environment variable to a valid locale.\
+pg_ctl: \uc0\u1082 \u1072 \u1090 \u1072 \u1083 \u1086 \u1075  "/Users/cholponklv/pg_pitr_demo/data" \u1085 \u1077  \u1089 \u1086 \u1076 \u1077 \u1088 \u1078 \u1080 \u1090  \u1089 \u1090 \u1088 \u1091 \u1082 \u1090 \u1091 \u1088 \u1099  \u1082 \u1083 \u1072 \u1089 \u1090 \u1077 \u1088 \u1072  \u1073 \u1072 \u1079  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093 \
+psql: \uc0\u1086 \u1096 \u1080 \u1073 \u1082 \u1072 : \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1080 \u1090 \u1100 \u1089 \u1103  \u1082  \u1089 \u1077 \u1088 \u1074 \u1077 \u1088 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1089 \u1086 \u1082 \u1077 \u1090  "/tmp/.s.PGSQL.5433" \u1085 \u1077  \u1091 \u1076 \u1072 \u1083 \u1086 \u1089 \u1100 : No such file or directory\
+	\uc0\u1057 \u1077 \u1088 \u1074 \u1077 \u1088  \u1076 \u1077 \u1081 \u1089 \u1090 \u1074 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u1083 \u1086 \u1082 \u1072 \u1083 \u1100 \u1085 \u1086  \u1080  \u1087 \u1088 \u1080 \u1085 \u1080 \u1084 \u1072 \u1077 \u1090  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1080 \u1103  \u1095 \u1077 \u1088 \u1077 \u1079  \u1101 \u1090 \u1086 \u1090  \u1089 \u1086 \u1082 \u1077 \u1090 ?\
+grep: /Users/cholponklv/pg_pitr_demo/server2.log: No such file or directory\
+cholponklv@MacBook-Air-cholponklv lab17 % pg_dump -h localhost -U cholponklv -d lab17 -Fc > migration.dump\
+createdb target_db\
+pg_restore -h localhost -U cholponklv -d target_db migration.dump\
+cholponklv@MacBook-Air-cholponklv lab17 % psql -d target_db\
+psql (16.11 (Homebrew))\
+\uc0\u1042 \u1074 \u1077 \u1076 \u1080 \u1090 \u1077  "help", \u1095 \u1090 \u1086 \u1073 \u1099  \u1087 \u1086 \u1083 \u1091 \u1095 \u1080 \u1090 \u1100  \u1089 \u1087 \u1088 \u1072 \u1074 \u1082 \u1091 .\
+\
+target_db=# CREATE TABLE staging_customers AS SELECT * FROM customers WHERE 1=0;\
+\
+COPY (SELECT * FROM customers LIMIT 10000 OFFSET 0)\
+TO '/tmp/customers_batch_1.csv' WITH CSV HEADER;\
+\
+COPY staging_customers FROM '/tmp/customers_batch_1.csv' WITH CSV HEADER;\
+\
+CREATE TABLE target_customers (LIKE customers INCLUDING ALL);\
+\
+INSERT INTO target_customers\
+SELECT * FROM staging_customers\
+ON CONFLICT (customer_id) DO UPDATE SET\
+    name = EXCLUDED.name,\
+    email = EXCLUDED.email,\
+    city = EXCLUDED.city;\
+\
+SELECT COUNT(*) FROM staging_customers;\
+SELECT COUNT(*) FROM target_customers;\
+SELECT 0\
+COPY 3\
+COPY 3\
+CREATE TABLE\
+INSERT 0 3\
+ count \
+-------\
+     3\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+ count \
+-------\
+     3\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+target_db=# \\q}

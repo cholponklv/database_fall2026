@@ -1,0 +1,330 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 lab12=# CREATE TABLE employees (\
+    id SERIAL PRIMARY KEY,\
+    name VARCHAR(100) NOT NULL,\
+    department VARCHAR(50),\
+    department_id INTEGER,\
+    salary NUMERIC(10,2)\
+);\
+\
+CREATE TABLE sales (\
+    sale_id SERIAL PRIMARY KEY,\
+    employee_id INTEGER REFERENCES employees(id),\
+    amount NUMERIC(10,2) NOT NULL\
+);\
+\
+CREATE TABLE products (\
+    product_id SERIAL PRIMARY KEY,\
+    product_name VARCHAR(100) NOT NULL,\
+    price NUMERIC(10,2) NOT NULL\
+);\
+\
+CREATE TABLE customers (\
+    customer_id SERIAL PRIMARY KEY,\
+    customer_name VARCHAR(100) NOT NULL\
+);\
+\
+CREATE TABLE users (\
+    user_id SERIAL PRIMARY KEY,\
+    email VARCHAR(100) NOT NULL\
+);\
+\
+INSERT INTO employees (name, department, department_id, salary) VALUES\
+    ('Alice Johnson', 'Engineering', 1, 95000),\
+    ('Bob Wilson', 'Sales', 3, 62000),\
+    ('Carol Davis', 'Engineering', 1, 120000),\
+    ('David Brown', 'Marketing', 5, 55000),\
+    ('Anna Smith', 'Sales', 3, 48000),\
+    ('Brian Lee', 'HR', 7, 70000),\
+    ('Emma White', 'Engineering', 1, 80000),\
+    ('Frank Moore', 'Sales', 3, NULL);\
+\
+INSERT INTO sales (employee_id, amount) VALUES\
+    (2, 1500), (2, 800), (5, 2500), (3, 400), (6, 1200), (1, 300);\
+\
+INSERT INTO products (product_name, price) VALUES\
+    ('Strawberry', 25.00),\
+    ('Blueberry', 30.50),\
+    ('Raspberry', 49.99),\
+    ('Apple', 10.00),\
+    ('Watermelon', 75.00),\
+    ('Cranberry', 20.00);\
+\
+INSERT INTO customers (customer_name) VALUES\
+    ('Brad Pitt'), ('Brandon Lee'), ('Brenda Song'), ('Alice Cooper'), ('Abra Cadabra');\
+\
+INSERT INTO users (email) VALUES\
+    ('john@gmail.com'),\
+    ('MARY@GMAIL.COM'),\
+    ('peter@yahoo.com'),\
+    ('not-an-email'),\
+    ('anna@mail.ru');\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+INSERT 0 8\
+INSERT 0 6\
+INSERT 0 6\
+INSERT 0 5\
+INSERT 0 5\
+lab12=# SELECT * FROM employees;\
+\
+SELECT name, department FROM employees;\
+\
+SELECT name, salary, salary * 0.10 AS potential_bonus FROM employees;\
+ id |     name      | department  | department_id |  salary   \
+----+---------------+-------------+---------------+-----------\
+  1 | Alice Johnson | Engineering |             1 |  95000.00\
+  2 | Bob Wilson    | Sales       |             3 |  62000.00\
+  3 | Carol Davis   | Engineering |             1 | 120000.00\
+  4 | David Brown   | Marketing   |             5 |  55000.00\
+  5 | Anna Smith    | Sales       |             3 |  48000.00\
+  6 | Brian Lee     | HR          |             7 |  70000.00\
+  7 | Emma White    | Engineering |             1 |  80000.00\
+  8 | Frank Moore   | Sales       |             3 |          \
+(8 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+     name      | department  \
+---------------+-------------\
+ Alice Johnson | Engineering\
+ Bob Wilson    | Sales\
+ Carol Davis   | Engineering\
+ David Brown   | Marketing\
+ Anna Smith    | Sales\
+ Brian Lee     | HR\
+ Emma White    | Engineering\
+ Frank Moore   | Sales\
+(8 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+     name      |  salary   | potential_bonus \
+---------------+-----------+-----------------\
+ Alice Johnson |  95000.00 |       9500.0000\
+ Bob Wilson    |  62000.00 |       6200.0000\
+ Carol Davis   | 120000.00 |      12000.0000\
+ David Brown   |  55000.00 |       5500.0000\
+ Anna Smith    |  48000.00 |       4800.0000\
+ Brian Lee     |  70000.00 |       7000.0000\
+ Emma White    |  80000.00 |       8000.0000\
+ Frank Moore   |           |                \
+(8 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab12=# SELECT name, salary FROM employees WHERE department = 'Sales';\
+\
+SELECT name FROM employees WHERE salary > 75000 AND department = 'Engineering';\
+\
+SELECT product_name, price FROM products WHERE price BETWEEN 20 AND 50;\
+    name     |  salary  \
+-------------+----------\
+ Bob Wilson  | 62000.00\
+ Anna Smith  | 48000.00\
+ Frank Moore |         \
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+     name      \
+---------------\
+ Alice Johnson\
+ Carol Davis\
+ Emma White\
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+ product_name | price \
+--------------+-------\
+ Strawberry   | 25.00\
+ Blueberry    | 30.50\
+ Raspberry    | 49.99\
+ Cranberry    | 20.00\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab12=# SELECT name FROM employees WHERE department <> 'Sales' AND NOT department = 'HR';\
+\
+SELECT name FROM employees WHERE department = 'HR' OR salary > 100000;\
+\
+SELECT name FROM employees WHERE salary IS NULL;\
+\
+SELECT name FROM employees WHERE salary IS NOT NULL;\
+     name      \
+---------------\
+ Alice Johnson\
+ Carol Davis\
+ David Brown\
+ Emma White\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+    name     \
+-------------\
+ Carol Davis\
+ Brian Lee\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+    name     \
+-------------\
+ Frank Moore\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+     name      \
+---------------\
+ Alice Johnson\
+ Bob Wilson\
+ Carol Davis\
+ David Brown\
+ Anna Smith\
+ Brian Lee\
+ Emma White\
+(7 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab12=# SELECT customer_name FROM customers WHERE customer_name LIKE 'Bra%';\
+\
+SELECT product_name FROM products WHERE product_name LIKE '%berry';\
+\
+SELECT email FROM users WHERE email ILIKE '%@gmail.com';\
+ customer_name \
+---------------\
+ Brad Pitt\
+ Brandon Lee\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+ product_name \
+--------------\
+ Strawberry\
+ Blueberry\
+ Raspberry\
+ Cranberry\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+     email      \
+----------------\
+ john@gmail.com\
+ MARY@GMAIL.COM\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab12=# SELECT email FROM users WHERE email LIKE '%@gmail.com';\
+     email      \
+----------------\
+ john@gmail.com\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+lab12=# SELECT name FROM employees WHERE name ~ '^[AB]';\
+\
+SELECT email FROM users WHERE email ~* '^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]\{2,\}$';\
+     name      \
+---------------\
+ Alice Johnson\
+ Bob Wilson\
+ Anna Smith\
+ Brian Lee\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+      email      \
+-----------------\
+ john@gmail.com\
+ MARY@GMAIL.COM\
+ peter@yahoo.com\
+ anna@mail.ru\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab12=# SELECT name FROM employees WHERE name ~ '^[ab]';\
+\
+SELECT name FROM employees WHERE name ~* '^[ab]';\
+\
+SELECT name FROM employees WHERE name !~ '^[AB]';\
+ name \
+------\
+(0 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+     name      \
+---------------\
+ Alice Johnson\
+ Bob Wilson\
+ Anna Smith\
+ Brian Lee\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+    name     \
+-------------\
+ Carol Davis\
+ David Brown\
+ Emma White\
+ Frank Moore\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab12=# SELECT name, department FROM employees WHERE department_id IN (3, 5, 7);\
+\
+SELECT name FROM employees WHERE id IN (SELECT employee_id FROM sales WHERE amount > 1000);\
+\
+SELECT name FROM employees e WHERE EXISTS (\
+    SELECT 1\
+    FROM sales s\
+    WHERE s.employee_id = e.id AND s.amount > 1000\
+);\
+    name     | department \
+-------------+------------\
+ Bob Wilson  | Sales\
+ David Brown | Marketing\
+ Anna Smith  | Sales\
+ Brian Lee   | HR\
+ Frank Moore | Sales\
+(5 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+    name    \
+------------\
+ Bob Wilson\
+ Anna Smith\
+ Brian Lee\
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+    name    \
+------------\
+ Bob Wilson\
+ Anna Smith\
+ Brian Lee\
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab12=# SELECT name, salary,\
+  CASE\
+    WHEN salary > 100000 THEN 'Senior'\
+    WHEN salary BETWEEN 60000 AND 100000 THEN 'Mid-Level'\
+    ELSE 'Junior'\
+  END AS employee_level\
+FROM employees;\
+     name      |  salary   | employee_level \
+---------------+-----------+----------------\
+ Alice Johnson |  95000.00 | Mid-Level\
+ Bob Wilson    |  62000.00 | Mid-Level\
+ Carol Davis   | 120000.00 | Senior\
+ David Brown   |  55000.00 | Junior\
+ Anna Smith    |  48000.00 | Junior\
+ Brian Lee     |  70000.00 | Mid-Level\
+ Emma White    |  80000.00 | Mid-Level\
+ Frank Moore   |           | Junior\
+(8 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab12=# WITH department_averages AS (\
+  SELECT\
+    department,\
+    AVG(salary) AS avg_salary\
+  FROM employees\
+  GROUP BY department\
+)\
+SELECT\
+  e.name,\
+  e.salary,\
+  e.department,\
+  da.avg_salary\
+FROM employees e\
+JOIN department_averages da ON e.department = da.department\
+WHERE e.salary > da.avg_salary;\
+    name     |  salary   | department  |     avg_salary     \
+-------------+-----------+-------------+--------------------\
+ Bob Wilson  |  62000.00 | Sales       | 55000.000000000000\
+ Carol Davis | 120000.00 | Engineering | 98333.333333333333\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab12=# }

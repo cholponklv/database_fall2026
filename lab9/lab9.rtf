@@ -1,0 +1,229 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 postgres=# CREATE DATABASE lab9;\
+CREATE DATABASE\
+postgres=# \\c lab9\
+\uc0\u1042 \u1099  \u1087 \u1086 \u1076 \u1082 \u1083 \u1102 \u1095 \u1077 \u1085 \u1099  \u1082  \u1073 \u1072 \u1079 \u1077  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093  "lab9" \u1082 \u1072 \u1082  \u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1100  "cholponklv".\
+lab9=# -- BAD: Multiple phone numbers in one column\
+CREATE TABLE students_bad (\
+    student_id INT PRIMARY KEY,\
+    name VARCHAR(100),\
+    phone_numbers TEXT -- "123-456-7890, 098-765-4321"\
+);\
+CREATE TABLE\
+lab9=# \\d students_bad\
+                                 \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.students_bad"\
+    \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094     |          \u1058 \u1080 \u1087            | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL | \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102  \
+---------------+------------------------+--------------------+-------------------+--------------\
+ student_id    | integer                |                    | not null          | \
+ name          | character varying(100) |                    |                   | \
+ phone_numbers | text                   |                    |                   | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "students_bad_pkey" PRIMARY KEY, btree (student_id)\
+\
+lab9=# DROP TABLE students_bad;\
+\
+-- GOOD: Atomic values\
+CREATE TABLE students (\
+    student_id INT PRIMARY KEY,\
+    name VARCHAR(100)\
+);\
+\
+CREATE TABLE student_phones (\
+    student_id INT,\
+    phone_number VARCHAR(15),\
+    phone_type VARCHAR(20), -- 'mobile', 'home', etc.\
+    PRIMARY KEY (student_id, phone_number),\
+    FOREIGN KEY (student_id) REFERENCES students(student_id)\
+);\
+DROP TABLE\
+CREATE TABLE\
+CREATE TABLE\
+lab9=# \\d student_phones\
+                               \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.student_phones"\
+   \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094     |          \u1058 \u1080 \u1087           | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL | \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102  \
+--------------+-----------------------+--------------------+-------------------+--------------\
+ student_id   | integer               |                    | not null          | \
+ phone_number | character varying(15) |                    | not null          | \
+ phone_type   | character varying(20) |                    |                   | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "student_phones_pkey" PRIMARY KEY, btree (student_id, phone_number)\
+\uc0\u1054 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1103  \u1074 \u1085 \u1077 \u1096 \u1085 \u1077 \u1075 \u1086  \u1082 \u1083 \u1102 \u1095 \u1072 :\
+    "student_phones_student_id_fkey" FOREIGN KEY (student_id) REFERENCES students(student_id)\
+\
+lab9=# -- BAD: course_name depends only on course_id, not on the full primary key\
+CREATE TABLE enrollments_bad (\
+    student_id INT,\
+    course_id INT,\
+    course_name VARCHAR(100), -- Partial dependency!\
+    grade CHAR(2),\
+    PRIMARY KEY (student_id, course_id)\
+);\
+CREATE TABLE\
+lab9=# \\d enrollments_bad\
+                               \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.enrollments_bad"\
+   \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094    |          \u1058 \u1080 \u1087            | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL | \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102  \
+-------------+------------------------+--------------------+-------------------+--------------\
+ student_id  | integer                |                    | not null          | \
+ course_id   | integer                |                    | not null          | \
+ course_name | character varying(100) |                    |                   | \
+ grade       | character(2)           |                    |                   | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "enrollments_bad_pkey" PRIMARY KEY, btree (student_id, course_id)\
+\
+lab9=# DROP TABLE enrollments_bad;\
+\
+-- GOOD: Separate tables\
+CREATE TABLE courses (\
+    course_id INT PRIMARY KEY,\
+    course_name VARCHAR(100),\
+    credits INT\
+);\
+\
+CREATE TABLE enrollments (\
+    student_id INT,\
+    course_id INT,\
+    grade CHAR(2),\
+    PRIMARY KEY (student_id, course_id),\
+    FOREIGN KEY (student_id) REFERENCES students(student_id),\
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)\
+);\
+DROP TABLE\
+CREATE TABLE\
+CREATE TABLE\
+lab9=# -- BAD: department_name depends on department_id, which depends on student_id\
+CREATE TABLE students_bad (\
+    student_id INT PRIMARY KEY,\
+    name VARCHAR(100),\
+    department_id INT,\
+    department_name VARCHAR(100) -- Transitive dependency!\
+);\
+CREATE TABLE\
+lab9=# \\d students_bad\
+                                  \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.students_bad"\
+     \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094      |          \u1058 \u1080 \u1087            | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL | \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102  \
+-----------------+------------------------+--------------------+-------------------+--------------\
+ student_id      | integer                |                    | not null          | \
+ name            | character varying(100) |                    |                   | \
+ department_id   | integer                |                    |                   | \
+ department_name | character varying(100) |                    |                   | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "students_bad_pkey" PRIMARY KEY, btree (student_id)\
+\
+lab9=# DROP TABLE students_bad;\
+DROP TABLE student_phones, enrollments, students;\
+\
+-- GOOD: Separate department information\
+CREATE TABLE departments (\
+    department_id INT PRIMARY KEY,\
+    department_name VARCHAR(100),\
+    department_head VARCHAR(100)\
+);\
+\
+CREATE TABLE students (\
+    student_id INT PRIMARY KEY,\
+    name VARCHAR(100),\
+    department_id INT,\
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)\
+);\
+DROP TABLE\
+DROP TABLE\
+CREATE TABLE\
+CREATE TABLE\
+lab9=# \\d students\
+                                   \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.students"\
+    \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094     |          \u1058 \u1080 \u1087            | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL | \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102  \
+---------------+------------------------+--------------------+-------------------+--------------\
+ student_id    | integer                |                    | not null          | \
+ name          | character varying(100) |                    |                   | \
+ department_id | integer                |                    |                   | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "students_pkey" PRIMARY KEY, btree (student_id)\
+\uc0\u1054 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1103  \u1074 \u1085 \u1077 \u1096 \u1085 \u1077 \u1075 \u1086  \u1082 \u1083 \u1102 \u1095 \u1072 :\
+    "students_department_id_fkey" FOREIGN KEY (department_id) REFERENCES departments(department_id)\
+\
+lab9=# CREATE TABLE authors (\
+    author_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    birth_date DATE\
+);\
+\
+CREATE TABLE books (\
+    book_id SERIAL PRIMARY KEY,\
+    title VARCHAR(200) NOT NULL,\
+    isbn VARCHAR(13) UNIQUE,\
+    publication_year INTEGER,\
+    available_copies INTEGER DEFAULT 1\
+);\
+\
+CREATE TABLE book_authors (\
+    book_id INTEGER,\
+    author_id INTEGER,\
+    PRIMARY KEY (book_id, author_id),\
+    FOREIGN KEY (book_id) REFERENCES books(book_id),\
+    FOREIGN KEY (author_id) REFERENCES authors(author_id)\
+);\
+\
+CREATE TABLE members (\
+    member_id SERIAL PRIMARY KEY,\
+    first_name VARCHAR(50) NOT NULL,\
+    last_name VARCHAR(50) NOT NULL,\
+    email VARCHAR(100) UNIQUE NOT NULL,\
+    phone VARCHAR(15),\
+    membership_date DATE DEFAULT CURRENT_DATE\
+);\
+\
+CREATE TABLE loans (\
+    loan_id SERIAL PRIMARY KEY,\
+    member_id INTEGER NOT NULL,\
+    book_id INTEGER NOT NULL,\
+    loan_date DATE DEFAULT CURRENT_DATE,\
+    due_date DATE NOT NULL,\
+    return_date DATE,\
+    late_fee DECIMAL(10,2) DEFAULT 0.00,\
+    FOREIGN KEY (member_id) REFERENCES members(member_id),\
+    FOREIGN KEY (book_id) REFERENCES books(book_id)\
+);\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+lab9=# \\dt\
+\\d loans\
+\\q\
+               \uc0\u1057 \u1087 \u1080 \u1089 \u1086 \u1082  \u1086 \u1090 \u1085 \u1086 \u1096 \u1077 \u1085 \u1080 \u1081 \
+ \uc0\u1057 \u1093 \u1077 \u1084 \u1072   |     \u1048 \u1084 \u1103       |   \u1058 \u1080 \u1087    |  \u1042 \u1083 \u1072 \u1076 \u1077 \u1083 \u1077 \u1094   \
+--------+--------------+---------+------------\
+ public | authors      | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | book_authors | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | books        | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | courses      | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | departments  | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | loans        | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | members      | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | students     | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+(8 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+                                            \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.loans"\
+   \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094    |      \u1058 \u1080 \u1087       | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL |              \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102               \
+-------------+---------------+--------------------+-------------------+----------------------------------------\
+ loan_id     | integer       |                    | not null          | nextval('loans_loan_id_seq'::regclass)\
+ member_id   | integer       |                    | not null          | \
+ book_id     | integer       |                    | not null          | \
+ loan_date   | date          |                    |                   | CURRENT_DATE\
+ due_date    | date          |                    | not null          | \
+ return_date | date          |                    |                   | \
+ late_fee    | numeric(10,2) |                    |                   | 0.00\
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "loans_pkey" PRIMARY KEY, btree (loan_id)\
+\uc0\u1054 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1103  \u1074 \u1085 \u1077 \u1096 \u1085 \u1077 \u1075 \u1086  \u1082 \u1083 \u1102 \u1095 \u1072 :\
+    "loans_book_id_fkey" FOREIGN KEY (book_id) REFERENCES books(book_id)\
+    "loans_member_id_fkey" FOREIGN KEY (member_id) REFERENCES members(member_id)\
+}

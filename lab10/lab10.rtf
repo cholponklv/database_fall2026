@@ -1,0 +1,84 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww25400\viewh14820\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 lab9=# \\dt\
+\\d loans\
+\\d books\
+\\d book_authors\
+\\d members\
+               \uc0\u1057 \u1087 \u1080 \u1089 \u1086 \u1082  \u1086 \u1090 \u1085 \u1086 \u1096 \u1077 \u1085 \u1080 \u1081 \
+ \uc0\u1057 \u1093 \u1077 \u1084 \u1072   |     \u1048 \u1084 \u1103       |   \u1058 \u1080 \u1087    |  \u1042 \u1083 \u1072 \u1076 \u1077 \u1083 \u1077 \u1094   \
+--------+--------------+---------+------------\
+ public | authors      | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | book_authors | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | books        | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | courses      | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | departments  | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | loans        | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | members      | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+ public | students     | \uc0\u1090 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  | cholponklv\
+(8 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+                                            \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.loans"\
+   \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094    |      \u1058 \u1080 \u1087       | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL |              \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102               \
+-------------+---------------+--------------------+-------------------+----------------------------------------\
+ loan_id     | integer       |                    | not null          | nextval('loans_loan_id_seq'::regclass)\
+ member_id   | integer       |                    | not null          | \
+ book_id     | integer       |                    | not null          | \
+ loan_date   | date          |                    |                   | CURRENT_DATE\
+ due_date    | date          |                    | not null          | \
+ return_date | date          |                    |                   | \
+ late_fee    | numeric(10,2) |                    |                   | 0.00\
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "loans_pkey" PRIMARY KEY, btree (loan_id)\
+\uc0\u1054 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1103  \u1074 \u1085 \u1077 \u1096 \u1085 \u1077 \u1075 \u1086  \u1082 \u1083 \u1102 \u1095 \u1072 :\
+    "loans_book_id_fkey" FOREIGN KEY (book_id) REFERENCES books(book_id)\
+    "loans_member_id_fkey" FOREIGN KEY (member_id) REFERENCES members(member_id)\
+\
+                                                   \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.books"\
+     \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094       |          \u1058 \u1080 \u1087            | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL |              \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102               \
+------------------+------------------------+--------------------+-------------------+----------------------------------------\
+ book_id          | integer                |                    | not null          | nextval('books_book_id_seq'::regclass)\
+ title            | character varying(200) |                    | not null          | \
+ isbn             | character varying(13)  |                    |                   | \
+ publication_year | integer                |                    |                   | \
+ available_copies | integer                |                    |                   | 1\
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "books_pkey" PRIMARY KEY, btree (book_id)\
+    "books_isbn_key" UNIQUE CONSTRAINT, btree (isbn)\
+\uc0\u1057 \u1089 \u1099 \u1083 \u1082 \u1080  \u1080 \u1079 \u1074 \u1085 \u1077 :\
+    TABLE "book_authors" CONSTRAINT "book_authors_book_id_fkey" FOREIGN KEY (book_id) REFERENCES books(book_id)\
+    TABLE "loans" CONSTRAINT "loans_book_id_fkey" FOREIGN KEY (book_id) REFERENCES books(book_id)\
+\
+                        \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.book_authors"\
+  \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094   |   \u1058 \u1080 \u1087    | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL | \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102  \
+-----------+---------+--------------------+-------------------+--------------\
+ book_id   | integer |                    | not null          | \
+ author_id | integer |                    | not null          | \
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "book_authors_pkey" PRIMARY KEY, btree (book_id, author_id)\
+\uc0\u1054 \u1075 \u1088 \u1072 \u1085 \u1080 \u1095 \u1077 \u1085 \u1080 \u1103  \u1074 \u1085 \u1077 \u1096 \u1085 \u1077 \u1075 \u1086  \u1082 \u1083 \u1102 \u1095 \u1072 :\
+    "book_authors_author_id_fkey" FOREIGN KEY (author_id) REFERENCES authors(author_id)\
+    "book_authors_book_id_fkey" FOREIGN KEY (book_id) REFERENCES books(book_id)\
+\
+                                                    \uc0\u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072  "public.members"\
+     \uc0\u1057 \u1090 \u1086 \u1083 \u1073 \u1077 \u1094      |          \u1058 \u1080 \u1087            | \u1055 \u1088 \u1072 \u1074 \u1080 \u1083 \u1086  \u1089 \u1086 \u1088 \u1090 \u1080 \u1088 \u1086 \u1074 \u1082 \u1080  | \u1044 \u1086 \u1087 \u1091 \u1089 \u1090 \u1080 \u1084 \u1086 \u1089 \u1090 \u1100  NULL |                \u1055 \u1086  \u1091 \u1084 \u1086 \u1083 \u1095 \u1072 \u1085 \u1080 \u1102                 \
+-----------------+------------------------+--------------------+-------------------+--------------------------------------------\
+ member_id       | integer                |                    | not null          | nextval('members_member_id_seq'::regclass)\
+ first_name      | character varying(50)  |                    | not null          | \
+ last_name       | character varying(50)  |                    | not null          | \
+ email           | character varying(100) |                    | not null          | \
+ phone           | character varying(15)  |                    |                   | \
+ membership_date | date                   |                    |                   | CURRENT_DATE\
+\uc0\u1048 \u1085 \u1076 \u1077 \u1082 \u1089 \u1099 :\
+    "members_pkey" PRIMARY KEY, btree (member_id)\
+    "members_email_key" UNIQUE CONSTRAINT, btree (email)\
+\uc0\u1057 \u1089 \u1099 \u1083 \u1082 \u1080  \u1080 \u1079 \u1074 \u1085 \u1077 :\
+    TABLE "loans" CONSTRAINT "loans_member_id_fkey" FOREIGN KEY (member_id) REFERENCES members(member_id)\
+\
+lab9=# \
+}

@@ -1,0 +1,370 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 lab14=# CREATE TABLE customers (\
+    customer_id SERIAL PRIMARY KEY,\
+    name VARCHAR(100),\
+    email VARCHAR(100)\
+);\
+\
+CREATE TABLE orders (\
+    order_id SERIAL PRIMARY KEY,\
+    customer_id INTEGER REFERENCES customers(customer_id),\
+    order_date DATE,\
+    total_amount DECIMAL(10,2)\
+);\
+\
+CREATE TABLE products (\
+    product_id SERIAL PRIMARY KEY,\
+    product_name VARCHAR(100),\
+    price DECIMAL(10,2)\
+);\
+\
+CREATE TABLE order_items (\
+    order_item_id SERIAL PRIMARY KEY,\
+    order_id INTEGER REFERENCES orders(order_id),\
+    product_id INTEGER REFERENCES products(product_id),\
+    quantity INTEGER\
+);\
+\
+CREATE TABLE employees (\
+    employee_id SERIAL PRIMARY KEY,\
+    name VARCHAR(100),\
+    manager_id INTEGER REFERENCES employees(employee_id)\
+);\
+\
+CREATE TABLE users (\
+    user_id SERIAL PRIMARY KEY,\
+    username VARCHAR(50)\
+);\
+\
+CREATE TABLE user_profiles (\
+    user_id INTEGER PRIMARY KEY REFERENCES users(user_id),\
+    first_name VARCHAR(50),\
+    last_name VARCHAR(50),\
+    phone VARCHAR(20)\
+);\
+\
+CREATE TABLE authors (\
+    author_id SERIAL PRIMARY KEY,\
+    author_name VARCHAR(100)\
+);\
+\
+CREATE TABLE books (\
+    book_id SERIAL PRIMARY KEY,\
+    author_id INTEGER REFERENCES authors(author_id),\
+    title VARCHAR(200),\
+    publication_year INTEGER\
+);\
+\
+CREATE TABLE students (\
+    student_id SERIAL PRIMARY KEY,\
+    student_name VARCHAR(100)\
+);\
+\
+CREATE TABLE courses (\
+    course_id SERIAL PRIMARY KEY,\
+    course_name VARCHAR(100)\
+);\
+\
+CREATE TABLE enrollments (\
+    student_id INTEGER REFERENCES students(student_id),\
+    course_id INTEGER REFERENCES courses(course_id),\
+    enrollment_date DATE,\
+    grade CHAR(2),\
+    PRIMARY KEY (student_id, course_id)\
+);\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+CREATE TABLE\
+lab14=# INSERT INTO customers (name, email) VALUES\
+    ('Alice Johnson', 'alice@example.com'),\
+    ('Bob Smith', 'bob@example.com'),\
+    ('Carol Davis', 'carol@example.com'),\
+    ('David Brown', 'david@example.com'),\
+    ('Eve Miller', 'eve@example.com');\
+\
+INSERT INTO orders (customer_id, order_date, total_amount) VALUES\
+    (1, '2024-02-10', 150.00),\
+    (1, '2023-11-05', 80.00),\
+    (2, '2024-03-15', 250.00),\
+    (3, '2024-05-20', 90.00),\
+    (NULL, '2024-06-01', 300.00);\
+\
+INSERT INTO products (product_name, price) VALUES\
+    ('Laptop', 1200.00),\
+    ('Mouse', 25.00),\
+    ('Keyboard', 75.00),\
+    ('Monitor', 300.00);\
+\
+INSERT INTO order_items (order_id, product_id, quantity) VALUES\
+    (1, 1, 1), (1, 2, 2), (2, 3, 1), (3, 4, 2), (4, 2, 1), (5, 3, 3);\
+\
+INSERT INTO employees (name, manager_id) VALUES\
+    ('Ruslan Aliev', NULL),\
+    ('Aigul Sadykova', 1),\
+    ('Timur Bekov', 1),\
+    ('Nurlan Omurov', 2);\
+\
+INSERT INTO users (username) VALUES ('johndoe'), ('janedoe'), ('guest');\
+\
+INSERT INTO user_profiles (user_id, first_name, last_name, phone) VALUES\
+    (1, 'John', 'Doe', '+996700111222'),\
+    (2, 'Jane', 'Doe', '+996700333444');\
+\
+INSERT INTO authors (author_name) VALUES ('George Orwell'), ('J.R.R. Tolkien'), ('Isaac Asimov');\
+\
+INSERT INTO books (author_id, title, publication_year) VALUES\
+    (1, '1984', 1949),\
+    (1, 'Animal Farm', 1945),\
+    (2, 'The Hobbit', 1937),\
+    (2, 'The Lord of the Rings', 1954),\
+    (3, 'Foundation', 1951);\
+\
+INSERT INTO students (student_name) VALUES ('Aibek'), ('Ainura'), ('Bakyt');\
+\
+INSERT INTO courses (course_name) VALUES ('Databases'), ('Algorithms'), ('Networks');\
+\
+INSERT INTO enrollments (student_id, course_id, enrollment_date, grade) VALUES\
+    (1, 1, '2024-09-01', 'A'),\
+    (1, 2, '2024-09-01', 'B+'),\
+    (2, 1, '2024-09-02', NULL),\
+    (3, 3, '2024-09-03', 'A-');\
+INSERT 0 5\
+INSERT 0 5\
+INSERT 0 4\
+INSERT 0 6\
+INSERT 0 4\
+INSERT 0 3\
+INSERT 0 2\
+INSERT 0 3\
+INSERT 0 5\
+INSERT 0 3\
+INSERT 0 3\
+INSERT 0 4\
+lab14=# SELECT c.name, c.email, o.order_date, o.total_amount FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id;\
+\
+SELECT c.name, c.email, o.order_date, o.total_amount FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id;\
+\
+SELECT c.name, c.email, o.order_date, o.total_amount FROM customers c RIGHT JOIN orders o ON c.customer_id = o.customer_id;\
+\
+SELECT c.name, c.email, o.order_date, o.total_amount FROM customers c FULL OUTER JOIN orders o ON c.customer_id = o.customer_id;\
+\
+SELECT c.name, p.product_name FROM customers c CROSS JOIN products p;\
+     name      |       email       | order_date | total_amount \
+---------------+-------------------+------------+--------------\
+ Alice Johnson | alice@example.com | 2024-02-10 |       150.00\
+ Alice Johnson | alice@example.com | 2023-11-05 |        80.00\
+ Bob Smith     | bob@example.com   | 2024-03-15 |       250.00\
+ Carol Davis   | carol@example.com | 2024-05-20 |        90.00\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+     name      |       email       | order_date | total_amount \
+---------------+-------------------+------------+--------------\
+ Alice Johnson | alice@example.com | 2024-02-10 |       150.00\
+ Alice Johnson | alice@example.com | 2023-11-05 |        80.00\
+ Bob Smith     | bob@example.com   | 2024-03-15 |       250.00\
+ Carol Davis   | carol@example.com | 2024-05-20 |        90.00\
+ Eve Miller    | eve@example.com   |            |             \
+ David Brown   | david@example.com |            |             \
+(6 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+     name      |       email       | order_date | total_amount \
+---------------+-------------------+------------+--------------\
+ Alice Johnson | alice@example.com | 2024-02-10 |       150.00\
+ Alice Johnson | alice@example.com | 2023-11-05 |        80.00\
+ Bob Smith     | bob@example.com   | 2024-03-15 |       250.00\
+ Carol Davis   | carol@example.com | 2024-05-20 |        90.00\
+               |                   | 2024-06-01 |       300.00\
+(5 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+     name      |       email       | order_date | total_amount \
+---------------+-------------------+------------+--------------\
+ Alice Johnson | alice@example.com | 2024-02-10 |       150.00\
+ Alice Johnson | alice@example.com | 2023-11-05 |        80.00\
+ Bob Smith     | bob@example.com   | 2024-03-15 |       250.00\
+ Carol Davis   | carol@example.com | 2024-05-20 |        90.00\
+               |                   | 2024-06-01 |       300.00\
+ Eve Miller    | eve@example.com   |            |             \
+ David Brown   | david@example.com |            |             \
+(7 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+     name      | product_name \
+---------------+--------------\
+ Alice Johnson | Laptop\
+ Bob Smith     | Laptop\
+ Carol Davis   | Laptop\
+ David Brown   | Laptop\
+ Eve Miller    | Laptop\
+ Alice Johnson | Mouse\
+ Bob Smith     | Mouse\
+ Carol Davis   | Mouse\
+ David Brown   | Mouse\
+ Eve Miller    | Mouse\
+ Alice Johnson | Keyboard\
+ Bob Smith     | Keyboard\
+ Carol Davis   | Keyboard\
+ David Brown   | Keyboard\
+ Eve Miller    | Keyboard\
+ Alice Johnson | Monitor\
+ Bob Smith     | Monitor\
+ Carol Davis   | Monitor\
+ David Brown   | Monitor\
+ Eve Miller    | Monitor\
+(20 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+lab14=# SELECT c.name, o.order_date FROM customers c RIGHT JOIN orders o ON c.customer_id = o.customer_id WHERE c.customer_id IS NULL;\
+\
+SELECT c.name, o.order_date, o.total_amount FROM customers c FULL OUTER JOIN orders o ON c.customer_id = o.customer_id WHERE c.customer_id IS NULL OR o.customer_id IS NULL;\
+ name | order_date \
+------+------------\
+      | 2024-06-01\
+(1 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1072 )\
+\
+    name     | order_date | total_amount \
+-------------+------------+--------------\
+             | 2024-06-01 |       300.00\
+ Eve Miller  |            |             \
+ David Brown |            |             \
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab14=# SELECT c.name, o.order_date, oi.quantity, p.product_name, p.price FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id INNER JOIN order_items oi ON o.order_id = oi.order_id INNER JOIN products p ON oi.product_id = p.product_id;\
+\
+SELECT e1.name AS employee, e2.name AS manager FROM employees e1 LEFT JOIN employees e2 ON e1.manager_id = e2.employee_id;\
+\
+SELECT c.name, o.order_date, o.total_amount FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id WHERE o.order_date >= '2024-01-01' AND o.total_amount > 100;\
+     name      | order_date | quantity | product_name |  price  \
+---------------+------------+----------+--------------+---------\
+ Alice Johnson | 2024-02-10 |        1 | Laptop       | 1200.00\
+ Alice Johnson | 2024-02-10 |        2 | Mouse        |   25.00\
+ Alice Johnson | 2023-11-05 |        1 | Keyboard     |   75.00\
+ Bob Smith     | 2024-03-15 |        2 | Monitor      |  300.00\
+ Carol Davis   | 2024-05-20 |        1 | Mouse        |   25.00\
+(5 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+    employee    |    manager     \
+----------------+----------------\
+ Ruslan Aliev   | \
+ Aigul Sadykova | Ruslan Aliev\
+ Timur Bekov    | Ruslan Aliev\
+ Nurlan Omurov  | Aigul Sadykova\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+     name      | order_date | total_amount \
+---------------+------------+--------------\
+ Alice Johnson | 2024-02-10 |       150.00\
+ Bob Smith     | 2024-03-15 |       250.00\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab14=# SELECT u.username, up.first_name, up.last_name, up.phone FROM users u LEFT JOIN user_profiles up ON u.user_id = up.user_id;\
+\
+SELECT a.author_name, b.title, b.publication_year FROM authors a INNER JOIN books b ON a.author_id = b.author_id ORDER BY a.author_name, b.publication_year;\
+\
+SELECT s.student_name, c.course_name, e.enrollment_date, e.grade FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id INNER JOIN courses c ON e.course_id = c.course_id WHERE e.grade IS NOT NULL ORDER BY s.student_name, c.course_name;\
+ username | first_name | last_name |     phone     \
+----------+------------+-----------+---------------\
+ johndoe  | John       | Doe       | +996700111222\
+ janedoe  | Jane       | Doe       | +996700333444\
+ guest    |            |           | \
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+  author_name   |         title         | publication_year \
+----------------+-----------------------+------------------\
+ George Orwell  | Animal Farm           |             1945\
+ George Orwell  | 1984                  |             1949\
+ Isaac Asimov   | Foundation            |             1951\
+ J.R.R. Tolkien | The Hobbit            |             1937\
+ J.R.R. Tolkien | The Lord of the Rings |             1954\
+(5 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+ student_name | course_name | enrollment_date | grade \
+--------------+-------------+-----------------+-------\
+ Aibek        | Algorithms  | 2024-09-01      | B+\
+ Aibek        | Databases   | 2024-09-01      | A \
+ Bakyt        | Networks    | 2024-09-03      | A-\
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab14=# CREATE INDEX idx_orders_customer_id ON orders(customer_id);\
+CREATE INDEX idx_order_items_order_id ON order_items(order_id);\
+CREATE INDEX idx_order_items_product_id ON order_items(product_id);\
+CREATE INDEX\
+CREATE INDEX\
+CREATE INDEX\
+lab14=# \\di idx_*\
+                            \uc0\u1057 \u1087 \u1080 \u1089 \u1086 \u1082  \u1086 \u1090 \u1085 \u1086 \u1096 \u1077 \u1085 \u1080 \u1081 \
+ \uc0\u1057 \u1093 \u1077 \u1084 \u1072   |            \u1048 \u1084 \u1103              |  \u1058 \u1080 \u1087    |  \u1042 \u1083 \u1072 \u1076 \u1077 \u1083 \u1077 \u1094   |   \u1058 \u1072 \u1073 \u1083 \u1080 \u1094 \u1072    \
+--------+----------------------------+--------+------------+-------------\
+ public | idx_order_items_order_id   | \uc0\u1080 \u1085 \u1076 \u1077 \u1082 \u1089  | cholponklv | order_items\
+ public | idx_order_items_product_id | \uc0\u1080 \u1085 \u1076 \u1077 \u1082 \u1089  | cholponklv | order_items\
+ public | idx_orders_customer_id     | \uc0\u1080 \u1085 \u1076 \u1077 \u1082 \u1089  | cholponklv | orders\
+(3 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab14=# SELECT c.name, o.order_date FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id;\
+     name      | order_date \
+---------------+------------\
+ Alice Johnson | 2023-11-05\
+ Alice Johnson | 2024-02-10\
+ Bob Smith     | 2024-03-15\
+ Carol Davis   | 2024-05-20\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+lab14=# SELECT c.name, o.order_date FROM customers c, orders o;\
+\
+SELECT c.name, o.order_date FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id;\
+\
+SELECT c.name FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id WHERE o.customer_id IS NULL;\
+     name      | order_date \
+---------------+------------\
+ Alice Johnson | 2024-02-10\
+ Alice Johnson | 2023-11-05\
+ Alice Johnson | 2024-03-15\
+ Alice Johnson | 2024-05-20\
+ Alice Johnson | 2024-06-01\
+ Bob Smith     | 2024-02-10\
+ Bob Smith     | 2023-11-05\
+ Bob Smith     | 2024-03-15\
+ Bob Smith     | 2024-05-20\
+ Bob Smith     | 2024-06-01\
+ Carol Davis   | 2024-02-10\
+ Carol Davis   | 2023-11-05\
+ Carol Davis   | 2024-03-15\
+ Carol Davis   | 2024-05-20\
+ Carol Davis   | 2024-06-01\
+ David Brown   | 2024-02-10\
+ David Brown   | 2023-11-05\
+ David Brown   | 2024-03-15\
+ David Brown   | 2024-05-20\
+ David Brown   | 2024-06-01\
+ Eve Miller    | 2024-02-10\
+ Eve Miller    | 2023-11-05\
+ Eve Miller    | 2024-03-15\
+ Eve Miller    | 2024-05-20\
+ Eve Miller    | 2024-06-01\
+(25 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 )\
+\
+     name      | order_date \
+---------------+------------\
+ Alice Johnson | 2023-11-05\
+ Alice Johnson | 2024-02-10\
+ Bob Smith     | 2024-03-15\
+ Carol Davis   | 2024-05-20\
+(4 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )\
+\
+    name     \
+-------------\
+ David Brown\
+ Eve Miller\
+(2 \uc0\u1089 \u1090 \u1088 \u1086 \u1082 \u1080 )}
